@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calisthenics Tracker</title>
+    <title>Workout Tracker</title>
     <style>
         * {
             margin: 0;
@@ -16,26 +16,28 @@
             background: #000;
             color: #fff;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 400px;
             margin: 0 auto;
-            height: 100vh;
+            min-height: calc(100vh - 20px);
             display: flex;
             flex-direction: column;
         }
 
         .header {
             text-align: center;
-            padding: 20px 0;
+            padding: 15px 0;
             border-bottom: 1px solid #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
         }
 
         .header h1 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 300;
             letter-spacing: 2px;
         }
@@ -45,19 +47,22 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
+            padding: 0 10px;
         }
 
         .day-btn {
             background: transparent;
             color: #fff;
             border: 1px solid #333;
-            padding: 20px;
-            font-size: 14px;
+            padding: 18px 15px;
+            font-size: 13px;
             font-weight: 300;
             cursor: pointer;
             transition: all 0.2s ease;
             letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.3;
         }
 
         .day-btn:hover {
@@ -70,31 +75,35 @@
             display: none;
             flex: 1;
             flex-direction: column;
+            min-height: calc(100vh - 20px);
         }
 
         .workout-header {
             text-align: center;
-            padding-bottom: 20px;
+            padding: 10px 0 15px 0;
             border-bottom: 1px solid #333;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
         }
 
         .workout-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 300;
             letter-spacing: 1px;
             text-transform: uppercase;
             opacity: 0.7;
+            line-height: 1.3;
         }
 
         .circle-container {
             position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 0 auto 40px;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .progress-ring {
@@ -119,8 +128,8 @@
         }
 
         .exercise-circle {
-            width: 240px;
-            height: 240px;
+            width: 180px;
+            height: 180px;
             border: 1px solid #333;
             border-radius: 50%;
             display: flex;
@@ -128,40 +137,41 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 40px;
+            padding: 25px;
             background: #000;
             position: relative;
             z-index: 2;
         }
 
         .exercise-type {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.5;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .exercise-name {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 400;
-            margin-bottom: 15px;
-            line-height: 1.3;
-            max-width: 160px;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            max-width: 130px;
         }
 
         .exercise-details {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.7;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
+            line-height: 1.3;
         }
 
         .complete-btn {
             background: transparent;
             color: #fff;
             border: 1px solid #fff;
-            padding: 12px 24px;
-            font-size: 11px;
+            padding: 10px 20px;
+            font-size: 10px;
             font-weight: 300;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -175,18 +185,22 @@
         }
 
         .exercise-list-container {
-            margin-top: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             border-top: 1px solid #333;
-            padding-top: 20px;
+            padding-top: 15px;
+            min-height: 0;
         }
 
         .exercise-list {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             overflow-x: auto;
-            padding: 0 0 20px 0;
+            padding: 0 0 15px 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            flex-shrink: 0;
         }
 
         .exercise-list::-webkit-scrollbar {
@@ -194,12 +208,13 @@
         }
 
         .exercise-item {
-            min-width: 120px;
-            padding: 12px;
+            min-width: 100px;
+            padding: 10px 8px;
             border: 1px solid #333;
             text-align: center;
             transition: all 0.2s ease;
             background: transparent;
+            flex-shrink: 0;
         }
 
         .exercise-item.current {
@@ -214,9 +229,9 @@
         }
 
         .exercise-item-name {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 300;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             line-height: 1.2;
         }
 
@@ -233,14 +248,15 @@
             background: transparent;
             color: #fff;
             border: 1px solid #333;
-            padding: 10px;
+            padding: 8px 12px;
             font-size: 10px;
             cursor: pointer;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             transition: all 0.2s ease;
             letter-spacing: 1px;
             text-transform: uppercase;
             width: fit-content;
+            flex-shrink: 0;
         }
 
         .back-btn:hover {
@@ -254,6 +270,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 20px;
         }
 
         .completion-title {
@@ -266,7 +283,7 @@
         .completion-message {
             font-size: 12px;
             opacity: 0.7;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             line-height: 1.5;
         }
 
@@ -274,7 +291,7 @@
             background: transparent;
             color: #fff;
             border: 1px solid #fff;
-            padding: 15px 30px;
+            padding: 15px 25px;
             font-size: 11px;
             font-weight: 300;
             cursor: pointer;
@@ -288,25 +305,128 @@
             color: #000;
         }
 
-        @media (max-width: 480px) {
+        /* Mobile optimizations */
+        @media (max-width: 400px) {
+            body {
+                padding: 8px;
+            }
+            
             .container {
-                padding: 15px;
+                min-height: calc(100vh - 16px);
             }
             
             .circle-container {
-                width: 250px;
-                height: 250px;
+                width: 200px;
+                height: 200px;
+                margin-bottom: 15px;
             }
             
             .exercise-circle {
-                width: 210px;
-                height: 210px;
-                padding: 30px;
+                width: 160px;
+                height: 160px;
+                padding: 20px;
             }
             
             .exercise-name {
+                font-size: 13px;
+                max-width: 120px;
+            }
+            
+            .exercise-details {
+                font-size: 10px;
+            }
+            
+            .complete-btn {
+                padding: 8px 16px;
+                font-size: 9px;
+            }
+            
+            .day-btn {
+                padding: 16px 12px;
+                font-size: 12px;
+            }
+            
+            .exercise-item {
+                min-width: 90px;
+                padding: 8px 6px;
+            }
+            
+            .exercise-item-name {
+                font-size: 8px;
+            }
+            
+            .exercise-item-details {
+                font-size: 7px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .circle-container {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .exercise-circle {
+                width: 140px;
+                height: 140px;
+                padding: 15px;
+            }
+            
+            .exercise-name {
+                font-size: 12px;
+                max-width: 110px;
+            }
+            
+            .exercise-item {
+                min-width: 80px;
+            }
+        }
+
+        /* Landscape mobile optimization */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .header {
+                padding: 8px 0;
+                margin-bottom: 10px;
+            }
+            
+            .header h1 {
                 font-size: 14px;
-                max-width: 140px;
+            }
+            
+            .circle-container {
+                width: 160px;
+                height: 160px;
+                margin-bottom: 10px;
+            }
+            
+            .exercise-circle {
+                width: 120px;
+                height: 120px;
+                padding: 15px;
+            }
+            
+            .exercise-name {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+            
+            .exercise-details {
+                font-size: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .complete-btn {
+                padding: 6px 12px;
+                font-size: 9px;
+            }
+            
+            .workout-header {
+                padding: 8px 0 10px 0;
+                margin-bottom: 10px;
+            }
+            
+            .exercise-list-container {
+                padding-top: 10px;
             }
         }
     </style>
@@ -314,7 +434,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>CALISTHENICS TRACKER</h1>
+            <h1>WORKOUT TRACKER</h1>
         </div>
 
         <div id="daySelector" class="day-selector">
@@ -337,9 +457,9 @@
             </div>
 
             <div class="circle-container">
-                <svg class="progress-ring" width="280" height="280">
-                    <circle class="progress-ring-bg" cx="140" cy="140" r="135"/>
-                    <circle id="progressRing" class="progress-ring-fill" cx="140" cy="140" r="135"/>
+                <svg class="progress-ring" width="220" height="220">
+                    <circle class="progress-ring-bg" cx="110" cy="110" r="105"/>
+                    <circle id="progressRing" class="progress-ring-fill" cx="110" cy="110" r="105"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
             </div>
@@ -539,7 +659,7 @@
             
             // Update progress ring
             const progress = (currentExerciseIndex / workout.exercises.length) * 100;
-            const circumference = 2 * Math.PI * 135;
+            const circumference = 2 * Math.PI * 105;
             const progressRing = document.getElementById('progressRing');
             progressRing.style.strokeDasharray = circumference;
             progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
