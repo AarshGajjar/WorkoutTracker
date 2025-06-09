@@ -3,545 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Tracker</title>
+    <title>Calisthenics Tracker</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #000;
-            color: #fff;
-            min-height: 100vh;
-            padding: 10px;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            min-height: calc(100vh - 20px);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            text-align: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #333;
-            margin-bottom: 20px;
-            flex-shrink: 0;
-        }
-
-        .header h1 {
-            font-size: 16px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .day-selector {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 12px;
-            padding: 0 10px;
-        }
-
-        .day-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 18px 15px;
-            font-size: 13px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        .day-btn:hover {
-            border-color: #fff;
-            background: #fff;
-            color: #000;
-        }
-
-        .workout-container {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            min-height: calc(100vh - 20px);
-        }
-
-        .workout-header {
-            text-align: center;
-            padding: 10px 0 15px 0;
-            border-bottom: 1px solid #333;
-            margin-bottom: 20px;
-            flex-shrink: 0;
-        }
-
-        .workout-title {
-            font-size: 11px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.7;
-            line-height: 1.3;
-        }
-
-        .circle-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 0 auto 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .progress-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-bg {
-            fill: none;
-            stroke: #333;
-            stroke-width: 3;
-        }
-
-        .progress-ring-fill {
-            fill: none;
-            stroke: #fff;
-            stroke-width: 3;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .exercise-circle {
-            width: 240px;
-            height: 240px;
-            border: 1px solid #333;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 35px;
-            background: #000;
-            position: relative;
-            z-index: 2;
-        }
-
-        .exercise-type {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.5;
-            margin-bottom: 15px;
-        }
-
-        .exercise-name {
-            font-size: 16px;
-            font-weight: 400;
-            margin-bottom: 12px;
-            line-height: 1.2;
-            max-width: 180px;
-        }
-
-        .exercise-details {
-            font-size: 13px;
-            opacity: 0.7;
-            margin-bottom: 18px;
-            line-height: 1.3;
-        }
-
-        .complete-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 12px 24px;
-            font-size: 11px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .complete-btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        .exercise-list-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid #333;
-            padding-top: 15px;
-            min-height: 0;
-        }
-
-        .exercise-list {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 0 0 15px 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            flex-shrink: 0;
-        }
-
-        .exercise-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        .workout-structure {
-            margin-top: 15px;
-            padding: 15px;
-            border: 1px solid #333;
-            background: transparent;
-        }
-
-        .structure-title {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .structure-visual {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .structure-section {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .section-label {
-            font-size: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.5;
-            margin-bottom: 4px;
-        }
-
-        .structure-rounds {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .round-indicator {
-            width: 8px;
-            height: 8px;
-            border: 1px solid #333;
-            background: transparent;
-            flex-shrink: 0;
-        }
-
-        .round-indicator.completed {
-            background: #fff;
-        }
-
-        .round-indicator.current {
-            border-color: #fff;
-            background: #333;
-        }
-
-        .structure-exercises {
-            display: flex;
-            gap: 2px;
-            flex: 1;
-        }
-
-        .exercise-dot {
-            width: 4px;
-            height: 4px;
-            background: #333;
-            flex: 1;
-            min-width: 4px;
-        }
-
-        .exercise-dot.completed {
-            background: #666;
-        }
-
-        .exercise-dot.current {
-            background: #fff;
-        }
-
-        .exercise-item {
-            min-width: 110px;
-            padding: 12px 10px;
-            border: 1px solid #333;
-            text-align: center;
-            transition: all 0.2s ease;
-            background: transparent;
-            flex-shrink: 0;
-        }
-
-        .exercise-item.current {
-            border-color: #fff;
-            background: #fff;
-            color: #000;
-        }
-
-        .exercise-item.completed {
-            opacity: 0.3;
-            border-color: #333;
-        }
-
-        .exercise-item-name {
-            font-size: 10px;
-            font-weight: 300;
-            margin-bottom: 5px;
-            line-height: 1.2;
-        }
-
-        .exercise-item-details {
-            font-size: 8px;
-            opacity: 0.7;
-        }
-
-        .exercise-item.current .exercise-item-details {
-            opacity: 0.5;
-        }
-
-        .back-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 8px 12px;
-            font-size: 10px;
-            cursor: pointer;
-            margin-bottom: 15px;
-            transition: all 0.2s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            width: fit-content;
-            flex-shrink: 0;
-        }
-
-        .back-btn:hover {
-            border-color: #fff;
-        }
-
-        .completion-screen {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .completion-title {
-            font-size: 18px;
-            font-weight: 300;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-
-        .completion-message {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .restart-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 15px 25px;
-            font-size: 11px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .restart-btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* Mobile optimizations */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #000; color: #fff; min-height: 100vh; padding: 10px; overflow-x: hidden; }
+        .container { max-width: 400px; margin: 0 auto; min-height: calc(100vh - 20px); display: flex; flex-direction: column; }
+        .header { text-align: center; padding: 15px 0; border-bottom: 1px solid #333; margin-bottom: 20px; flex-shrink: 0; }
+        .header h1 { font-size: 16px; font-weight: 300; letter-spacing: 2px; }
+        .day-selector { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 10px; }
+        .day-btn { background: transparent; color: #fff; border: 1px solid #333; padding: 18px 15px; font-size: 13px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-align: center; line-height: 1.3; }
+        .day-btn:hover { border-color: #fff; background: #fff; color: #000; }
+        .workout-container { display: none; flex: 1; flex-direction: column; min-height: calc(100vh - 20px); }
+        .workout-header { text-align: center; padding: 10px 0 15px 0; border-bottom: 1px solid #333; margin-bottom: 20px; flex-shrink: 0; }
+        .workout-title { font-size: 11px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; line-height: 1.3; }
+        .circuit-counter { text-align: center; margin-bottom: 15px; flex-shrink: 0; }
+        .circuit-counter-text { font-size: 10px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; opacity: 0.5; margin-bottom: 5px; }
+        .circuit-dots { display: flex; justify-content: center; gap: 8px; }
+        .circuit-dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #333; transition: all 0.2s ease; }
+        .circuit-dot.active { background: #fff; border-color: #fff; }
+        .circuit-dot.completed { background: #333; border-color: #333; }
+        .circle-container { position: relative; width: 280px; height: 280px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .progress-ring { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+        .progress-ring-bg { fill: none; stroke: #333; stroke-width: 3; }
+        .progress-ring-fill { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+        .exercise-circle { width: 240px; height: 240px; border: 1px solid #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 35px; background: #000; position: relative; z-index: 2; }
+        .exercise-type { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; margin-bottom: 15px; }
+        .exercise-name { font-size: 16px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; max-width: 180px; }
+        .exercise-details { font-size: 13px; opacity: 0.7; margin-bottom: 18px; line-height: 1.3; }
+        .complete-btn { background: transparent; color: #fff; border: 1px solid #fff; padding: 12px 24px; font-size: 11px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .complete-btn:hover { background: #fff; color: #000; }
+        .exercise-list-container { flex: 1; display: flex; flex-direction: column; border-top: 1px solid #333; padding-top: 15px; min-height: 0; }
+        .exercise-list { display: flex; gap: 12px; overflow-x: auto; padding: 0 0 15px 0; scrollbar-width: none; -ms-overflow-style: none; flex-shrink: 0; }
+        .exercise-list::-webkit-scrollbar { display: none; }
+        .exercise-item { min-width: 110px; padding: 12px 10px; border: 1px solid #333; text-align: center; transition: all 0.2s ease; background: transparent; flex-shrink: 0; }
+        .exercise-item.current { border-color: #fff; background: #fff; color: #000; }
+        .exercise-item.completed { opacity: 0.3; border-color: #333; }
+        .exercise-item-name { font-size: 10px; font-weight: 300; margin-bottom: 5px; line-height: 1.2; }
+        .exercise-item-details { font-size: 8px; opacity: 0.7; }
+        .exercise-item.current .exercise-item-details { opacity: 0.5; }
+        .back-btn { background: transparent; color: #fff; border: 1px solid #333; padding: 8px 12px; font-size: 10px; cursor: pointer; margin-bottom: 15px; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; width: fit-content; flex-shrink: 0; }
+        .back-btn:hover { border-color: #fff; }
+        .completion-screen { display: none; flex: 1; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .completion-title { font-size: 18px; font-weight: 300; margin-bottom: 10px; letter-spacing: 2px; }
+        .completion-message { font-size: 12px; opacity: 0.7; margin-bottom: 30px; line-height: 1.5; }
+        .restart-btn { background: transparent; color: #fff; border: 1px solid #fff; padding: 15px 25px; font-size: 11px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .restart-btn:hover { background: #fff; color: #000; }
         @media (max-width: 400px) {
-            body {
-                padding: 8px;
-            }
-            
-            .container {
-                min-height: calc(100vh - 16px);
-            }
-            
-            .circle-container {
-                width: 260px;
-                height: 260px;
-                margin-bottom: 20px;
-            }
-            
-            .exercise-circle {
-                width: 220px;
-                height: 220px;
-                padding: 30px;
-            }
-            
-            .exercise-name {
-                font-size: 15px;
-                max-width: 160px;
-            }
-            
-            .exercise-details {
-                font-size: 12px;
-            }
-            
-            .complete-btn {
-                padding: 10px 20px;
-                font-size: 10px;
-            }
-            
-            .day-btn {
-                padding: 16px 12px;
-                font-size: 12px;
-            }
-            
-            .exercise-item {
-                min-width: 100px;
-                padding: 10px 8px;
-            }
-            
-            .exercise-item-name {
-                font-size: 9px;
-            }
-            
-            .exercise-item-details {
-                font-size: 7px;
-            }
+            body { padding: 8px; }
+            .container { min-height: calc(100vh - 16px); }
+            .circle-container { width: 260px; height: 260px; margin-bottom: 20px; }
+            .exercise-circle { width: 220px; height: 220px; padding: 30px; }
+            .exercise-name { font-size: 15px; max-width: 160px; }
+            .exercise-details { font-size: 12px; }
+            .complete-btn { padding: 10px 20px; font-size: 10px; }
+            .day-btn { padding: 16px 12px; font-size: 12px; }
+            .exercise-item { min-width: 100px; padding: 10px 8px; }
+            .exercise-item-name { font-size: 9px; }
+            .exercise-item-details { font-size: 7px; }
         }
-
         @media (max-width: 320px) {
-            .circle-container {
-                width: 240px;
-                height: 240px;
-            }
-            
-            .exercise-circle {
-                width: 200px;
-                height: 200px;
-                padding: 25px;
-            }
-            
-            .exercise-name {
-                font-size: 14px;
-                max-width: 150px;
-            }
-            
-            .exercise-item {
-                min-width: 90px;
-            }
+            .circle-container { width: 240px; height: 240px; }
+            .exercise-circle { width: 200px; height: 200px; padding: 25px; }
+            .exercise-name { font-size: 14px; max-width: 150px; }
+            .exercise-item { min-width: 90px; }
         }
-
-        /* Landscape mobile optimization */
         @media (max-height: 600px) and (orientation: landscape) {
-            .header {
-                padding: 8px 0;
-                margin-bottom: 10px;
-            }
-            
-            .header h1 {
-                font-size: 14px;
-            }
-            
-            .circle-container {
-                width: 200px;
-                height: 200px;
-                margin-bottom: 10px;
-            }
-            
-            .exercise-circle {
-                width: 160px;
-                height: 160px;
-                padding: 20px;
-            }
-            
-            .exercise-name {
-                font-size: 14px;
-                margin-bottom: 8px;
-            }
-            
-            .exercise-details {
-                font-size: 11px;
-                margin-bottom: 12px;
-            }
-            
-            .complete-btn {
-                padding: 8px 16px;
-                font-size: 10px;
-            }
-            
-            .workout-header {
-                padding: 8px 0 10px 0;
-                margin-bottom: 10px;
-            }
-            
-            .exercise-list-container {
-                padding-top: 10px;
-            }
-            
-            .workout-structure {
-                margin-top: 10px;
-                padding: 10px;
-            }
+            .header { padding: 8px 0; margin-bottom: 10px; }
+            .header h1 { font-size: 14px; }
+            .circle-container { width: 200px; height: 200px; margin-bottom: 10px; }
+            .exercise-circle { width: 160px; height: 160px; padding: 20px; }
+            .exercise-name { font-size: 14px; margin-bottom: 8px; }
+            .exercise-details { font-size: 11px; margin-bottom: 12px; }
+            .complete-btn { padding: 8px 16px; font-size: 10px; }
+            .workout-header { padding: 8px 0 10px 0; margin-bottom: 10px; }
+            .exercise-list-container { padding-top: 10px; }
+            .circuit-counter { margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>WORKOUT TRACKER</h1>
+            <h1>CALISTHENICS</h1>
         </div>
 
         <div id="daySelector" class="day-selector">
-            <button class="day-btn" onclick="startWorkout(1)">
-                Day 1: Push (Upper Body Pushing & Skill Work)
-            </button>
-            <button class="day-btn" onclick="startWorkout(2)">
-                Day 2: Pull (Upper Body Pulling & Skill Work)
-            </button>
-            <button class="day-btn" onclick="startWorkout(3)">
-                Day 3: Legs & Core
-            </button>
+            <button class="day-btn" onclick="startWorkout(1)">Day 1: Pull/Push Power + Upper Skills</button>
+            <button class="day-btn" onclick="startWorkout(2)">Day 2: Strength + Lower Skills + Core</button>
+            <button class="day-btn" onclick="startWorkout(3)">Day 3: Hybrid + Advanced Skills + Arms</button>
         </div>
 
         <div id="workoutContainer" class="workout-container">
             <button class="back-btn" onclick="goBack()">← Back</button>
-            
             <div class="workout-header">
                 <div id="workoutTitle" class="workout-title"></div>
             </div>
-
+            <div id="circuitCounter" class="circuit-counter">
+                <div class="circuit-counter-text">Circuit</div>
+                <div class="circuit-dots">
+                    <div class="circuit-dot"></div>
+                    <div class="circuit-dot"></div>
+                    <div class="circuit-dot"></div>
+                </div>
+            </div>
             <div class="circle-container">
                 <svg class="progress-ring" width="280" height="280">
                     <circle class="progress-ring-bg" cx="140" cy="140" r="135"/>
@@ -549,19 +113,14 @@
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
             </div>
-
             <div class="exercise-list-container">
                 <div id="exerciseList" class="exercise-list"></div>
-                <div id="workoutStructure" class="workout-structure"></div>
             </div>
         </div>
 
         <div id="completionScreen" class="completion-screen">
             <div class="completion-title">COMPLETE</div>
-            <div class="completion-message">
-                Workout finished.<br>
-                Well done.
-            </div>
+            <div class="completion-message">Workout finished.<br>Well done.</div>
             <button class="restart-btn" onclick="goBack()">Choose Another Day</button>
         </div>
     </div>
@@ -569,95 +128,174 @@
     <script>
         const workouts = {
             1: {
-                title: "Day 1: Push (Upper Body Pushing & Skill Work)",
+                title: "Day 1: Pull/Push Power + Upper Skills",
                 exercises: [
-                    { type: "warmup", name: "Shoulder mobility", details: "e.g., band pull-aparts, light pushups" },
-                    { type: "main", name: "Ring dips", details: "3 sets of 4-6 reps" },
-                    { type: "main", name: "Pike pushups", details: "3 sets of 6-8 reps" },
-                    { type: "main", name: "Diamond pushups", details: "3 sets of 8-12 reps" },
-                    { type: "main", name: "Dumbbell overhead press", details: "3 sets of 8-12 reps" },
-                    { type: "skill", name: "Handstand progression", details: "3-5 sets of short holds/attempts" },
-                    { type: "finisher", name: "Triceps extensions (dumbbell or band)", details: "2-3 sets of 10-15 reps" }
+                    { type: "warmup", name: "Arm Circles + Wrist Prep", details: "45s" },
+                    { type: "warmup", name: "Scapula Pushups", details: "10 reps" },
+                    { type: "warmup", name: "Hollow Body Rocks", details: "10 reps" },
+                    { type: "warmup", name: "Band Pull-Aparts", details: "15 reps" },
+                    { type: "main", name: "Pull-ups", details: "To failure" },
+                    { type: "main", name: "Ring Dips", details: "To failure" },
+                    { type: "main", name: "Ring/Band Rows", details: "12-15 reps" },
+                    { type: "main", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "main", name: "Chin-ups", details: "To failure" },
+                    { type: "main", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "main", name: "Frog Stand", details: "20-30s hold" },
+                    { type: "main", name: "Pseudo Planche Lean", details: "15-25s hold" },
+                    { type: "finisher", name: "Handstand Practice", details: "3x 20-40s" },
+                    { type: "finisher", name: "Dumbbell Bicep Curls", details: "12-15 reps" },
+                    { type: "finisher", name: "Band Tricep Extensions", details: "15-20 reps" }
                 ]
             },
             2: {
-                title: "Day 2: Pull (Upper Body Pulling & Skill Work)",
+                title: "Day 2: Strength + Lower Skills + Core",
                 exercises: [
-                    { type: "warmup", name: "Thoracic mobility", details: "e.g., scapular pulls, light ring rows" },
-                    { type: "main", name: "Pull-ups", details: "3 sets of 4-6 reps" },
-                    { type: "main", name: "Ring rows", details: "3 sets of 8-12 reps" },
-                    { type: "main", name: "Chinups", details: "3 sets of 6-8 reps" },
-                    { type: "main", name: "Band face pulls", details: "3 sets of 12-15 reps" },
-                    { type: "skill", name: "Front lever progression", details: "3 sets of holds/attempts" },
-                    { type: "skill", name: "Back lever progression", details: "3 sets of holds/attempts" },
-                    { type: "finisher", name: "Dumbbell bicep curls", details: "2-3 sets of 10-12 reps" },
-                    { type: "finisher", name: "Dumbbell hammer curls", details: "2-3 sets of 10-12 reps" }
+                    { type: "warmup", name: "Hip Circles + Leg Swings", details: "45s" },
+                    { type: "warmup", name: "Glute Bridges", details: "12 reps" },
+                    { type: "warmup", name: "Cat-Cow Stretches", details: "30s" },
+                    { type: "warmup", name: "Band Squats", details: "15 reps" },
+                    { type: "main", name: "Pistol Squats", details: "Max each leg" },
+                    { type: "main", name: "Archer Pushups", details: "6-10 each side" },
+                    { type: "main", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
+                    { type: "main", name: "Ring Rows (wide grip)", details: "12-15 reps" },
+                    { type: "main", name: "Single-leg Deadlifts", details: "8-12 each leg" },
+                    { type: "main", name: "L-Sit Hold", details: "15-30s" },
+                    { type: "main", name: "Band-Assisted Nordics", details: "5-8 reps" },
+                    { type: "main", name: "Hanging Knee Raises", details: "10-15 reps" },
+                    { type: "finisher", name: "Jump Squats", details: "15-20 reps" },
+                    { type: "finisher", name: "Hollow Body Hold", details: "30-45s" },
+                    { type: "finisher", name: "Plank to Pike", details: "10-15 reps" }
                 ]
             },
             3: {
-                title: "Day 3: Legs & Core",
+                title: "Day 3: Hybrid + Advanced Skills + Arms",
                 exercises: [
-                    { type: "warmup", name: "Hip mobility", details: "e.g., bodyweight squats, leg swings" },
-                    { type: "main", name: "Pistol squats", details: "3 sets of 4-6 reps per leg" },
-                    { type: "main", name: "Single leg deadlifts", details: "3 sets of 6-8 reps per leg" },
-                    { type: "main", name: "Nordic curls", details: "2-3 sets of 4-6 reps" },
-                    { type: "main", name: "L-sit holds", details: "3 sets of 10-20 seconds" },
-                    { type: "main", name: "Hanging knee raises", details: "3 sets of 10-15 reps" },
-                    { type: "finisher", name: "Jump squats", details: "2-3 sets of 8-10 reps" },
-                    { type: "finisher", name: "Hollow body holds", details: "2-3 sets of 20-30 seconds" },
-                    { type: "finisher", name: "Plank to pike", details: "2-3 sets of 10-12 reps" }
+                    { type: "warmup", name: "Full Body Flow", details: "45s" },
+                    { type: "warmup", name: "Hollow Rocks", details: "12 reps" },
+                    { type: "warmup", name: "Pike Pulses", details: "12 reps" },
+                    { type: "warmup", name: "Wrist Prep + Band Pulls", details: "30s" },
+                    { type: "main", name: "Wide Pushups", details: "To failure" },
+                    { type: "main", name: "Chin-ups", details: "To failure" },
+                    { type: "main", name: "Front Lever Progression", details: "15-25s hold" },
+                    { type: "main", name: "Ring Dips", details: "To failure" },
+                    { type: "main", name: "Close-Grip Pushups", details: "To failure" },
+                    { type: "main", name: "Band Face Pulls", details: "15-20 reps" },
+                    { type: "main", name: "Back Lever Progression", details: "10-20s hold" },
+                    { type: "main", name: "Dumbbell Overhead Press", details: "10-15 reps" },
+                    { type: "finisher", name: "Handstand Pushup Progression", details: "3-8 reps" },
+                    { type: "finisher", name: "Dumbbell Hammer Curls", details: "12-15 reps" },
+                    { type: "finisher", name: "Band Tricep Pushdowns", details: "15-20 reps" }
                 ]
             }
         };
 
         let currentWorkout = null;
         let currentExerciseIndex = 0;
+        let currentCircuit = 1;
+        let warmupCompleted = false;
+        let mainExerciseIndices = [];
 
         function startWorkout(day) {
             currentWorkout = workouts[day];
             currentExerciseIndex = 0;
+            currentCircuit = 1;
+            warmupCompleted = false;
+            
+            // Find main exercise indices
+            mainExerciseIndices = [];
+            currentWorkout.exercises.forEach((exercise, index) => {
+                if (exercise.type === 'main') {
+                    mainExerciseIndices.push(index);
+                }
+            });
             
             document.getElementById('daySelector').style.display = 'none';
             document.getElementById('workoutContainer').style.display = 'flex';
             document.getElementById('completionScreen').style.display = 'none';
-            
             updateWorkoutDisplay();
             createExerciseList();
-            createWorkoutStructure();
         }
 
         function updateWorkoutDisplay() {
             const workout = currentWorkout;
             const exercise = workout.exercises[currentExerciseIndex];
-            
             document.getElementById('workoutTitle').textContent = workout.title;
             
-            // Update progress ring
-            const progress = (currentExerciseIndex / workout.exercises.length) * 100;
+            // Update circuit counter visibility and state
+            const circuitCounter = document.getElementById('circuitCounter');
+            if (exercise.type === 'main') {
+                circuitCounter.style.display = 'block';
+                updateCircuitCounter();
+            } else {
+                circuitCounter.style.display = 'none';
+            }
+            
+            // Calculate progress
+            let totalExercises = workout.exercises.length;
+            let mainExercisesCount = mainExerciseIndices.length;
+            let warmupCount = mainExerciseIndices[0];
+            let finisherCount = workout.exercises.length - mainExerciseIndices[mainExerciseIndices.length - 1] - 1;
+            
+            // Progress calculation
+            let completedExercises = 0;
+            
+            // Count completed warmup exercises
+            if (currentExerciseIndex <= warmupCount) {
+                completedExercises = currentExerciseIndex;
+            } else {
+                completedExercises = warmupCount;
+            }
+            
+            // Count completed main exercises
+            if (exercise.type === 'main') {
+                completedExercises += (currentCircuit - 1) * mainExercisesCount;
+                let mainPosition = mainExerciseIndices.indexOf(currentExerciseIndex);
+                completedExercises += mainPosition + 1;
+            } else if (exercise.type === 'finisher') {
+                // All main exercises are complete when we reach finisher
+                completedExercises += mainExercisesCount * 3;
+                completedExercises += currentExerciseIndex - mainExerciseIndices[mainExercisesCount - 1] - 1;
+            } else {
+                // For exercises after warmup but before first main
+                completedExercises = currentExerciseIndex;
+            }
+            
+            // Adjust total exercises to account for 3 circuits of main exercises
+            totalExercises = warmupCount + (mainExercisesCount * 3) + finisherCount;
+            
+            const progress = (completedExercises / totalExercises) * 100;
             const circumference = 2 * Math.PI * 135;
             const progressRing = document.getElementById('progressRing');
             progressRing.style.strokeDasharray = circumference;
             progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
             
-            // Update exercise circle
             const exerciseCircle = document.getElementById('exerciseCircle');
             exerciseCircle.innerHTML = `
                 <div class="exercise-type">${exercise.type}</div>
                 <div class="exercise-name">${exercise.name}</div>
                 <div class="exercise-details">${exercise.details}</div>
                 <button class="complete-btn" onclick="completeExercise()">
-                    ${currentExerciseIndex === workout.exercises.length - 1 ? 'Finish' : 'Complete'}
+                    ${isWorkoutComplete() ? 'Finish' : 'Complete'}
                 </button>
             `;
-            
             updateExerciseList();
-            updateWorkoutStructure();
+        }
+
+        function updateCircuitCounter() {
+            const dots = document.querySelectorAll('.circuit-dot');
+            dots.forEach((dot, index) => {
+                dot.className = 'circuit-dot';
+                if (index + 1 < currentCircuit) {
+                    dot.classList.add('completed');
+                } else if (index + 1 === currentCircuit) {
+                    dot.classList.add('active');
+                }
+            });
         }
 
         function createExerciseList() {
             const exerciseList = document.getElementById('exerciseList');
             const exercises = currentWorkout.exercises;
-            
             exerciseList.innerHTML = exercises.map((exercise, index) => `
                 <div class="exercise-item ${index === currentExerciseIndex ? 'current' : ''} ${index < currentExerciseIndex ? 'completed' : ''}">
                     <div class="exercise-item-name">${exercise.name}</div>
@@ -679,168 +317,51 @@
             });
         }
 
-        function createWorkoutStructure() {
-            const structureContainer = document.getElementById('workoutStructure');
-            const exercises = currentWorkout.exercises;
+        function isWorkoutComplete() {
+            const exercise = currentWorkout.exercises[currentExerciseIndex];
             
-            // Analyze workout structure
-            const structure = analyzeWorkoutStructure(exercises);
-            
-            let structureHTML = `
-                <div class="structure-title">Workout Structure</div>
-                <div class="structure-visual">
-            `;
-            
-            structure.forEach((section, sectionIndex) => {
-                structureHTML += `
-                    <div class="structure-section">
-                        <div class="section-label">${section.name}</div>
-                `;
-                
-                if (section.rounds > 1) {
-                    // Show rounds for circuit sections
-                    for (let round = 0; round < section.rounds; round++) {
-                        const roundStartIndex = section.startIndex + (round * section.exercisesPerRound);
-                        const roundEndIndex = roundStartIndex + section.exercisesPerRound - 1;
-                        const isCurrentRound = currentExerciseIndex >= roundStartIndex && currentExerciseIndex <= roundEndIndex;
-                        const isCompletedRound = currentExerciseIndex > roundEndIndex;
-                        
-                        structureHTML += `
-                            <div class="structure-rounds">
-                                <div class="round-indicator ${isCompletedRound ? 'completed' : ''} ${isCurrentRound ? 'current' : ''}"></div>
-                                <div class="structure-exercises">
-                        `;
-                        
-                        for (let i = 0; i < section.exercisesPerRound; i++) {
-                            const exerciseIndex = roundStartIndex + i;
-                            const isCurrentExercise = exerciseIndex === currentExerciseIndex;
-                            const isCompletedExercise = exerciseIndex < currentExerciseIndex;
-                            
-                            structureHTML += `<div class="exercise-dot ${isCompletedExercise ? 'completed' : ''} ${isCurrentExercise ? 'current' : ''}"></div>`;
-                        }
-                        
-                        structureHTML += `
-                                </div>
-                            </div>
-                        `;
-                    }
-                } else {
-                    // Show single row for non-repeating sections
-                    structureHTML += `
-                        <div class="structure-rounds">
-                            <div class="round-indicator ${currentExerciseIndex > section.endIndex ? 'completed' : ''} ${currentExerciseIndex >= section.startIndex && currentExerciseIndex <= section.endIndex ? 'current' : ''}"></div>
-                            <div class="structure-exercises">
-                    `;
-                    
-                    for (let i = section.startIndex; i <= section.endIndex; i++) {
-                        const isCurrentExercise = i === currentExerciseIndex;
-                        const isCompletedExercise = i < currentExerciseIndex;
-                        
-                        structureHTML += `<div class="exercise-dot ${isCompletedExercise ? 'completed' : ''} ${isCurrentExercise ? 'current' : ''}"></div>`;
-                    }
-                    
-                    structureHTML += `
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                structureHTML += `</div>`;
-            });
-            
-            structureHTML += `</div>`;
-            structureContainer.innerHTML = structureHTML;
-        }
-
-        function analyzeWorkoutStructure(exercises) {
-            const structure = [];
-            let currentIndex = 0;
-            
-            // Group exercises by type and detect patterns
-            const typeGroups = [];
-            let currentGroup = { type: exercises[0].type, exercises: [exercises[0]], startIndex: 0 };
-            
-            for (let i = 1; i < exercises.length; i++) {
-                if (exercises[i].type === currentGroup.type) {
-                    currentGroup.exercises.push(exercises[i]);
-                } else {
-                    currentGroup.endIndex = i - 1;
-                    typeGroups.push(currentGroup);
-                    currentGroup = { type: exercises[i].type, exercises: [exercises[i]], startIndex: i };
-                }
+            // If we're at the last finisher exercise, workout is complete
+            if (exercise.type === 'finisher' && currentExerciseIndex === currentWorkout.exercises.length - 1) {
+                return true;
             }
-            currentGroup.endIndex = exercises.length - 1;
-            typeGroups.push(currentGroup);
             
-            // Analyze each group for patterns
-            typeGroups.forEach(group => {
-                if (group.type === 'circuit') {
-                    // Detect repeating patterns in circuit
-                    const exerciseNames = group.exercises.map(ex => ex.name);
-                    const patternLength = detectRepeatingPattern(exerciseNames);
-                    
-                    if (patternLength > 1) {
-                        const rounds = exerciseNames.length / patternLength;
-                        structure.push({
-                            name: `${group.type} (${rounds} rounds)`,
-                            rounds: rounds,
-                            exercisesPerRound: patternLength,
-                            startIndex: group.startIndex,
-                            endIndex: group.endIndex
-                        });
-                    } else {
-                        structure.push({
-                            name: group.type,
-                            rounds: 1,
-                            exercisesPerRound: group.exercises.length,
-                            startIndex: group.startIndex,
-                            endIndex: group.endIndex
-                        });
-                    }
-                } else {
-                    structure.push({
-                        name: group.type,
-                        rounds: 1,
-                        exercisesPerRound: group.exercises.length,
-                        startIndex: group.startIndex,
-                        endIndex: group.endIndex
-                    });
-                }
-            });
-            
-            return structure;
-        }
-
-        function detectRepeatingPattern(arr) {
-            for (let patternLength = 1; patternLength <= arr.length / 2; patternLength++) {
-                if (arr.length % patternLength === 0) {
-                    let isPattern = true;
-                    const pattern = arr.slice(0, patternLength);
-                    
-                    for (let i = patternLength; i < arr.length; i += patternLength) {
-                        const segment = arr.slice(i, i + patternLength);
-                        if (JSON.stringify(segment) !== JSON.stringify(pattern)) {
-                            isPattern = false;
-                            break;
-                        }
-                    }
-                    
-                    if (isPattern) {
-                        return patternLength;
-                    }
-                }
-            }
-            return arr.length;
-        }
-
-        function updateWorkoutStructure() {
-            createWorkoutStructure();
+            return false;
         }
 
         function completeExercise() {
-            currentExerciseIndex++;
+            const exercise = currentWorkout.exercises[currentExerciseIndex];
+            
+            if (exercise.type === 'main') {
+                // Find current position in main exercises
+                const mainExercisePosition = mainExerciseIndices.indexOf(currentExerciseIndex);
+                
+                if (mainExercisePosition === mainExerciseIndices.length - 1) {
+                    // Completed last main exercise in current circuit
+                    if (currentCircuit < 3) {
+                        // Go to next circuit
+                        currentCircuit++;
+                        currentExerciseIndex = mainExerciseIndices[0]; // Go back to first main exercise
+                    } else {
+                        // Completed all 3 circuits, move to finisher exercises
+                        currentExerciseIndex++;
+                    }
+                } else {
+                    // Move to next main exercise in current circuit
+                    currentExerciseIndex = mainExerciseIndices[mainExercisePosition + 1];
+                }
+            } else {
+                // For warmup and finisher exercises, just move to next
+                currentExerciseIndex++;
+                
+                // Mark warmup as completed when moving to main exercises
+                if (!warmupCompleted && currentExerciseIndex < currentWorkout.exercises.length && 
+                    currentWorkout.exercises[currentExerciseIndex].type === 'main') {
+                    warmupCompleted = true;
+                }
+            }
             
             if (currentExerciseIndex >= currentWorkout.exercises.length) {
+                // Workout complete
                 document.getElementById('workoutContainer').style.display = 'none';
                 document.getElementById('completionScreen').style.display = 'flex';
             } else {
@@ -854,6 +375,9 @@
             document.getElementById('completionScreen').style.display = 'none';
             currentWorkout = null;
             currentExerciseIndex = 0;
+            currentCircuit = 1;
+            warmupCompleted = false;
+            mainExerciseIndices = [];
         }
     </script>
 </body>
