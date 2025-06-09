@@ -97,9 +97,9 @@
 
         .circle-container {
             position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 20px;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -116,20 +116,20 @@
         .progress-ring-bg {
             fill: none;
             stroke: #333;
-            stroke-width: 2;
+            stroke-width: 3;
         }
 
         .progress-ring-fill {
             fill: none;
             stroke: #fff;
-            stroke-width: 2;
+            stroke-width: 3;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.5s ease;
         }
 
         .exercise-circle {
-            width: 180px;
-            height: 180px;
+            width: 240px;
+            height: 240px;
             border: 1px solid #333;
             border-radius: 50%;
             display: flex;
@@ -137,32 +137,32 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 25px;
+            padding: 35px;
             background: #000;
             position: relative;
             z-index: 2;
         }
 
         .exercise-type {
-            font-size: 9px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.5;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .exercise-name {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             line-height: 1.2;
-            max-width: 130px;
+            max-width: 180px;
         }
 
         .exercise-details {
-            font-size: 11px;
+            font-size: 13px;
             opacity: 0.7;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             line-height: 1.3;
         }
 
@@ -170,8 +170,8 @@
             background: transparent;
             color: #fff;
             border: 1px solid #fff;
-            padding: 10px 20px;
-            font-size: 10px;
+            padding: 12px 24px;
+            font-size: 11px;
             font-weight: 300;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -207,9 +207,90 @@
             display: none;
         }
 
+        .workout-structure {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #333;
+            background: transparent;
+        }
+
+        .structure-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .structure-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .structure-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .section-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            margin-bottom: 4px;
+        }
+
+        .structure-rounds {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .round-indicator {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #333;
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        .round-indicator.completed {
+            background: #fff;
+        }
+
+        .round-indicator.current {
+            border-color: #fff;
+            background: #333;
+        }
+
+        .structure-exercises {
+            display: flex;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .exercise-dot {
+            width: 4px;
+            height: 4px;
+            background: #333;
+            flex: 1;
+            min-width: 4px;
+        }
+
+        .exercise-dot.completed {
+            background: #666;
+        }
+
+        .exercise-dot.current {
+            background: #fff;
+        }
+
         .exercise-item {
-            min-width: 100px;
-            padding: 10px 8px;
+            min-width: 110px;
+            padding: 12px 10px;
             border: 1px solid #333;
             text-align: center;
             transition: all 0.2s ease;
@@ -229,9 +310,9 @@
         }
 
         .exercise-item-name {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 300;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             line-height: 1.2;
         }
 
@@ -316,29 +397,29 @@
             }
             
             .circle-container {
-                width: 200px;
-                height: 200px;
-                margin-bottom: 15px;
+                width: 260px;
+                height: 260px;
+                margin-bottom: 20px;
             }
             
             .exercise-circle {
-                width: 160px;
-                height: 160px;
-                padding: 20px;
+                width: 220px;
+                height: 220px;
+                padding: 30px;
             }
             
             .exercise-name {
-                font-size: 13px;
-                max-width: 120px;
+                font-size: 15px;
+                max-width: 160px;
             }
             
             .exercise-details {
-                font-size: 10px;
+                font-size: 12px;
             }
             
             .complete-btn {
-                padding: 8px 16px;
-                font-size: 9px;
+                padding: 10px 20px;
+                font-size: 10px;
             }
             
             .day-btn {
@@ -347,12 +428,12 @@
             }
             
             .exercise-item {
-                min-width: 90px;
-                padding: 8px 6px;
+                min-width: 100px;
+                padding: 10px 8px;
             }
             
             .exercise-item-name {
-                font-size: 8px;
+                font-size: 9px;
             }
             
             .exercise-item-details {
@@ -362,23 +443,23 @@
 
         @media (max-width: 320px) {
             .circle-container {
-                width: 180px;
-                height: 180px;
+                width: 240px;
+                height: 240px;
             }
             
             .exercise-circle {
-                width: 140px;
-                height: 140px;
-                padding: 15px;
+                width: 200px;
+                height: 200px;
+                padding: 25px;
             }
             
             .exercise-name {
-                font-size: 12px;
-                max-width: 110px;
+                font-size: 14px;
+                max-width: 150px;
             }
             
             .exercise-item {
-                min-width: 80px;
+                min-width: 90px;
             }
         }
 
@@ -394,30 +475,30 @@
             }
             
             .circle-container {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
                 margin-bottom: 10px;
             }
             
             .exercise-circle {
-                width: 120px;
-                height: 120px;
-                padding: 15px;
+                width: 160px;
+                height: 160px;
+                padding: 20px;
             }
             
             .exercise-name {
-                font-size: 12px;
+                font-size: 14px;
                 margin-bottom: 8px;
             }
             
             .exercise-details {
-                font-size: 10px;
-                margin-bottom: 10px;
+                font-size: 11px;
+                margin-bottom: 12px;
             }
             
             .complete-btn {
-                padding: 6px 12px;
-                font-size: 9px;
+                padding: 8px 16px;
+                font-size: 10px;
             }
             
             .workout-header {
@@ -427,6 +508,11 @@
             
             .exercise-list-container {
                 padding-top: 10px;
+            }
+            
+            .workout-structure {
+                margin-top: 10px;
+                padding: 10px;
             }
         }
     </style>
@@ -439,10 +525,10 @@
 
         <div id="daySelector" class="day-selector">
             <button class="day-btn" onclick="startWorkout(1)">
-                Day 1: Power + Upper Skills + Arms
+                Day 1: Pull/Push Power + Upper Skills
             </button>
             <button class="day-btn" onclick="startWorkout(2)">
-                Day 2: Strength + Lower Skills + Arms
+                Day 2: Strength + Lower Skills + Core
             </button>
             <button class="day-btn" onclick="startWorkout(3)">
                 Day 3: Hybrid + Advanced Skills + Arms
@@ -457,15 +543,16 @@
             </div>
 
             <div class="circle-container">
-                <svg class="progress-ring" width="220" height="220">
-                    <circle class="progress-ring-bg" cx="110" cy="110" r="105"/>
-                    <circle id="progressRing" class="progress-ring-fill" cx="110" cy="110" r="105"/>
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-bg" cx="140" cy="140" r="135"/>
+                    <circle id="progressRing" class="progress-ring-fill" cx="140" cy="140" r="135"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
             </div>
 
             <div class="exercise-list-container">
                 <div id="exerciseList" class="exercise-list"></div>
+                <div id="workoutStructure" class="workout-structure"></div>
             </div>
         </div>
 
@@ -482,156 +569,144 @@
     <script>
         const workouts = {
             1: {
-                title: "Day 1: Power + Upper Skills + Arms",
+                title: "Day 1: Pull/Push Power + Upper Skills",
                 exercises: [
                     // Warm-up
-                    { type: "warmup", name: "Arm Circles + Wrist Prep", details: "30s" },
+                    { type: "warmup", name: "Arm Circles + Wrist Prep", details: "45s" },
                     { type: "warmup", name: "Scapula Pushups", details: "10 reps" },
                     { type: "warmup", name: "Hollow Body Rocks", details: "10 reps" },
-                    { type: "warmup", name: "Cat-Cow", details: "30s" },
+                    { type: "warmup", name: "Band Pull-Aparts", details: "15 reps" },
                     
-                    // First Circuit (3 rounds)
-                    { type: "circuit", name: "Pull-ups", details: "To failure" },
-                    { type: "circuit", name: "Frog Stand", details: "15-30s hold" },
-                    { type: "circuit", name: "Chin-ups", details: "To failure" },
-                    { type: "circuit", name: "Diamond Pushups", details: "8-12 reps" },
+                    // Block A (3 rounds)
+                    { type: "block-a", name: "Pull-ups", details: "To failure" },
+                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
+                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
                     
-                    { type: "circuit", name: "Pull-ups", details: "To failure" },
-                    { type: "circuit", name: "Frog Stand", details: "15-30s hold" },
-                    { type: "circuit", name: "Chin-ups", details: "To failure" },
-                    { type: "circuit", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "block-a", name: "Pull-ups", details: "To failure" },
+                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
+                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
                     
-                    { type: "circuit", name: "Pull-ups", details: "To failure" },
-                    { type: "circuit", name: "Frog Stand", details: "15-30s hold" },
-                    { type: "circuit", name: "Chin-ups", details: "To failure" },
-                    { type: "circuit", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "block-a", name: "Pull-ups", details: "To failure" },
+                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
+                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
                     
-                    // Second Circuit (3 rounds)
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Pseudo Planche Lean", details: "15-30s hold" },
-                    { type: "circuit", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "circuit", name: "Pike Pushups", details: "8-12 reps" },
+                    // Block B (3 rounds)
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
                     
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Pseudo Planche Lean", details: "15-30s hold" },
-                    { type: "circuit", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "circuit", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
                     
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Pseudo Planche Lean", details: "15-30s hold" },
-                    { type: "circuit", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "circuit", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
+                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
                     
                     // Finisher
-                    { type: "finisher", name: "Handstand Practice", details: "2x 20-40s" },
-                    { type: "finisher", name: "Hanging Ab Raises", details: "To failure" },
-                    { type: "finisher", name: "Bodyweight Tricep Extensions", details: "To failure" },
-                    
-                    // Cooldown
-                    { type: "cooldown", name: "Shoulder Stretches", details: "30s each" },
-                    { type: "cooldown", name: "Wrist Stretches", details: "30s each" },
-                    { type: "cooldown", name: "Chest Stretches", details: "30s each" }
+                    { type: "finisher", name: "Handstand Practice", details: "3x 20-40s" },
+                    { type: "finisher", name: "Dumbbell Bicep Curls", details: "12-15 reps" },
+                    { type: "finisher", name: "Band Tricep Extensions", details: "15-20 reps" }
                 ]
             },
             2: {
-                title: "Day 2: Strength + Lower Skills + Arms",
+                title: "Day 2: Strength + Lower Skills + Core",
                 exercises: [
                     // Warm-up
-                    { type: "warmup", name: "Hip Circles", details: "30s" },
-                    { type: "warmup", name: "Leg Swings", details: "30s each" },
-                    { type: "warmup", name: "Hollow Body Hold", details: "20s" },
-                    { type: "warmup", name: "Glute Bridges", details: "10 reps" },
+                    { type: "warmup", name: "Hip Circles + Leg Swings", details: "45s" },
+                    { type: "warmup", name: "Glute Bridges", details: "12 reps" },
+                    { type: "warmup", name: "Cat-Cow Stretches", details: "30s" },
+                    { type: "warmup", name: "Band Squats", details: "15 reps" },
                     
-                    // First Circuit (3 rounds)
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Nordic Curls", details: "3-6 reps" },
-                    { type: "circuit", name: "Archer Pushups", details: "5-8 each side" },
-                    { type: "circuit", name: "L-Sit Hold", details: "10-30s" },
+                    // Block A (3 rounds)
+                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
+                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
+                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
+                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
                     
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Nordic Curls", details: "3-6 reps" },
-                    { type: "circuit", name: "Archer Pushups", details: "5-8 each side" },
-                    { type: "circuit", name: "L-Sit Hold", details: "10-30s" },
+                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
+                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
+                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
+                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
                     
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Nordic Curls", details: "3-6 reps" },
-                    { type: "circuit", name: "Archer Pushups", details: "5-8 each side" },
-                    { type: "circuit", name: "L-Sit Hold", details: "10-30s" },
+                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
+                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
+                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
+                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
                     
-                    // Second Circuit (3 rounds)
-                    { type: "circuit", name: "Ring Rows", details: "To failure" },
-                    { type: "circuit", name: "Straddle Compression", details: "10-15 reps" },
-                    { type: "circuit", name: "Commando Pushups", details: "6-10 reps" },
-                    { type: "circuit", name: "Single-leg Glute Bridge", details: "8-12 each leg" },
+                    // Block B (3 rounds)
+                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
+                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
+                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
+                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
                     
-                    { type: "circuit", name: "Ring Rows", details: "To failure" },
-                    { type: "circuit", name: "Straddle Compression", details: "10-15 reps" },
-                    { type: "circuit", name: "Commando Pushups", details: "6-10 reps" },
-                    { type: "circuit", name: "Single-leg Glute Bridge", details: "8-12 each leg" },
+                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
+                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
+                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
+                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
                     
-                    { type: "circuit", name: "Ring Rows", details: "To failure" },
-                    { type: "circuit", name: "Straddle Compression", details: "10-15 reps" },
-                    { type: "circuit", name: "Commando Pushups", details: "6-10 reps" },
-                    { type: "circuit", name: "Single-leg Glute Bridge", details: "8-12 each leg" },
+                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
+                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
+                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
+                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
                     
                     // Finisher
-                    { type: "finisher", name: "Bodyweight Squats", details: "To failure" },
-                    { type: "finisher", name: "Reverse Nordic Curls", details: "6-10 reps" },
-                    { type: "finisher", name: "Inverted Rows (underhand)", details: "To failure" },
-                    
-                    // Cooldown
-                    { type: "cooldown", name: "Hip Flexor Stretches", details: "30s each" },
-                    { type: "cooldown", name: "Hamstring Stretches", details: "30s each" }
+                    { type: "finisher", name: "Jump Squats", details: "15-20 reps" },
+                    { type: "finisher", name: "Hollow Body Hold", details: "30-45s" },
+                    { type: "finisher", name: "Plank to Pike", details: "10-15 reps" }
                 ]
             },
             3: {
                 title: "Day 3: Hybrid + Advanced Skills + Arms",
                 exercises: [
                     // Warm-up
-                    { type: "warmup", name: "Full Body Flow", details: "30s" },
-                    { type: "warmup", name: "Hollow Rocks", details: "10 reps" },
-                    { type: "warmup", name: "Pike Pulses", details: "10 reps" },
-                    { type: "warmup", name: "Wrist Prep", details: "30s" },
+                    { type: "warmup", name: "Full Body Flow", details: "45s" },
+                    { type: "warmup", name: "Hollow Rocks", details: "12 reps" },
+                    { type: "warmup", name: "Pike Pulses", details: "12 reps" },
+                    { type: "warmup", name: "Wrist Prep + Band Pulls", details: "30s" },
                     
-                    // First Circuit (3 rounds)
-                    { type: "circuit", name: "Pushups", details: "To failure" },
-                    { type: "circuit", name: "Front Lever Hold", details: "10-20s" },
-                    { type: "circuit", name: "Narrow Pushups", details: "To failure" },
-                    { type: "circuit", name: "Typewriter Pullups", details: "3-5 each side" },
+                    // Block A (3 rounds)
+                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
+                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
+                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
                     
-                    { type: "circuit", name: "Pushups", details: "To failure" },
-                    { type: "circuit", name: "Front Lever Hold", details: "10-20s" },
-                    { type: "circuit", name: "Narrow Pushups", details: "To failure" },
-                    { type: "circuit", name: "Typewriter Pullups", details: "3-5 each side" },
+                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
+                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
+                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
                     
-                    { type: "circuit", name: "Pushups", details: "To failure" },
-                    { type: "circuit", name: "Front Lever Hold", details: "10-20s" },
-                    { type: "circuit", name: "Narrow Pushups", details: "To failure" },
-                    { type: "circuit", name: "Typewriter Pullups", details: "3-5 each side" },
+                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
+                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
+                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
+                    { type: "block-a", name: "Chin-ups", details: "To failure" },
                     
-                    // Second Circuit (3 rounds)
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Back Lever (Tuck)", details: "10-20s" },
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Bicep Curls", details: "10-15 reps" },
+                    // Block B (3 rounds)
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
+                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
+                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
                     
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Back Lever (Tuck)", details: "10-20s" },
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Bicep Curls", details: "10-15 reps" },
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
+                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
+                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
                     
-                    { type: "circuit", name: "Ring Dips", details: "To failure" },
-                    { type: "circuit", name: "Back Lever (Tuck)", details: "10-20s" },
-                    { type: "circuit", name: "Pistol Squats", details: "To failure each leg" },
-                    { type: "circuit", name: "Bicep Curls", details: "10-15 reps" },
+                    { type: "block-b", name: "Ring Dips", details: "To failure" },
+                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
+                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
+                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
                     
                     // Finisher
-                    { type: "finisher", name: "Handstand Pushups", details: "3-8 reps" },
-                    { type: "finisher", name: "Planche Lean", details: "10-15s hold" },
-                    { type: "finisher", name: "Hanging Ab Raises", details: "To failure" },
-                    
-                    // Cooldown
-                    { type: "cooldown", name: "Full Body Stretch Flow", details: "3 minutes" }
+                    { type: "finisher", name: "Handstand Pushup Progression", details: "3-8 reps" },
+                    { type: "finisher", name: "Dumbbell Hammer Curls", details: "12-15 reps" },
+                    { type: "finisher", name: "Band Tricep Pushdowns", details: "15-20 reps" }
                 ]
             }
         };
@@ -649,6 +724,7 @@
             
             updateWorkoutDisplay();
             createExerciseList();
+            createWorkoutStructure();
         }
 
         function updateWorkoutDisplay() {
@@ -659,7 +735,7 @@
             
             // Update progress ring
             const progress = (currentExerciseIndex / workout.exercises.length) * 100;
-            const circumference = 2 * Math.PI * 105;
+            const circumference = 2 * Math.PI * 135;
             const progressRing = document.getElementById('progressRing');
             progressRing.style.strokeDasharray = circumference;
             progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -676,6 +752,7 @@
             `;
             
             updateExerciseList();
+            updateWorkoutStructure();
         }
 
         function createExerciseList() {
@@ -701,6 +778,164 @@
                     item.classList.add('completed');
                 }
             });
+        }
+
+        function createWorkoutStructure() {
+            const structureContainer = document.getElementById('workoutStructure');
+            const exercises = currentWorkout.exercises;
+            
+            // Analyze workout structure
+            const structure = analyzeWorkoutStructure(exercises);
+            
+            let structureHTML = `
+                <div class="structure-title">Workout Structure</div>
+                <div class="structure-visual">
+            `;
+            
+            structure.forEach((section, sectionIndex) => {
+                structureHTML += `
+                    <div class="structure-section">
+                        <div class="section-label">${section.name}</div>
+                `;
+                
+                if (section.rounds > 1) {
+                    // Show rounds for circuit sections
+                    for (let round = 0; round < section.rounds; round++) {
+                        const roundStartIndex = section.startIndex + (round * section.exercisesPerRound);
+                        const roundEndIndex = roundStartIndex + section.exercisesPerRound - 1;
+                        const isCurrentRound = currentExerciseIndex >= roundStartIndex && currentExerciseIndex <= roundEndIndex;
+                        const isCompletedRound = currentExerciseIndex > roundEndIndex;
+                        
+                        structureHTML += `
+                            <div class="structure-rounds">
+                                <div class="round-indicator ${isCompletedRound ? 'completed' : ''} ${isCurrentRound ? 'current' : ''}"></div>
+                                <div class="structure-exercises">
+                        `;
+                        
+                        for (let i = 0; i < section.exercisesPerRound; i++) {
+                            const exerciseIndex = roundStartIndex + i;
+                            const isCurrentExercise = exerciseIndex === currentExerciseIndex;
+                            const isCompletedExercise = exerciseIndex < currentExerciseIndex;
+                            
+                            structureHTML += `<div class="exercise-dot ${isCompletedExercise ? 'completed' : ''} ${isCurrentExercise ? 'current' : ''}"></div>`;
+                        }
+                        
+                        structureHTML += `
+                                </div>
+                            </div>
+                        `;
+                    }
+                } else {
+                    // Show single row for non-repeating sections
+                    structureHTML += `
+                        <div class="structure-rounds">
+                            <div class="round-indicator ${currentExerciseIndex > section.endIndex ? 'completed' : ''} ${currentExerciseIndex >= section.startIndex && currentExerciseIndex <= section.endIndex ? 'current' : ''}"></div>
+                            <div class="structure-exercises">
+                    `;
+                    
+                    for (let i = section.startIndex; i <= section.endIndex; i++) {
+                        const isCurrentExercise = i === currentExerciseIndex;
+                        const isCompletedExercise = i < currentExerciseIndex;
+                        
+                        structureHTML += `<div class="exercise-dot ${isCompletedExercise ? 'completed' : ''} ${isCurrentExercise ? 'current' : ''}"></div>`;
+                    }
+                    
+                    structureHTML += `
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                structureHTML += `</div>`;
+            });
+            
+            structureHTML += `</div>`;
+            structureContainer.innerHTML = structureHTML;
+        }
+
+        function analyzeWorkoutStructure(exercises) {
+            const structure = [];
+            let currentIndex = 0;
+            
+            // Group exercises by type and detect patterns
+            const typeGroups = [];
+            let currentGroup = { type: exercises[0].type, exercises: [exercises[0]], startIndex: 0 };
+            
+            for (let i = 1; i < exercises.length; i++) {
+                if (exercises[i].type === currentGroup.type) {
+                    currentGroup.exercises.push(exercises[i]);
+                } else {
+                    currentGroup.endIndex = i - 1;
+                    typeGroups.push(currentGroup);
+                    currentGroup = { type: exercises[i].type, exercises: [exercises[i]], startIndex: i };
+                }
+            }
+            currentGroup.endIndex = exercises.length - 1;
+            typeGroups.push(currentGroup);
+            
+            // Analyze each group for patterns
+            typeGroups.forEach(group => {
+                if (group.type === 'circuit') {
+                    // Detect repeating patterns in circuit
+                    const exerciseNames = group.exercises.map(ex => ex.name);
+                    const patternLength = detectRepeatingPattern(exerciseNames);
+                    
+                    if (patternLength > 1) {
+                        const rounds = exerciseNames.length / patternLength;
+                        structure.push({
+                            name: `${group.type} (${rounds} rounds)`,
+                            rounds: rounds,
+                            exercisesPerRound: patternLength,
+                            startIndex: group.startIndex,
+                            endIndex: group.endIndex
+                        });
+                    } else {
+                        structure.push({
+                            name: group.type,
+                            rounds: 1,
+                            exercisesPerRound: group.exercises.length,
+                            startIndex: group.startIndex,
+                            endIndex: group.endIndex
+                        });
+                    }
+                } else {
+                    structure.push({
+                        name: group.type,
+                        rounds: 1,
+                        exercisesPerRound: group.exercises.length,
+                        startIndex: group.startIndex,
+                        endIndex: group.endIndex
+                    });
+                }
+            });
+            
+            return structure;
+        }
+
+        function detectRepeatingPattern(arr) {
+            for (let patternLength = 1; patternLength <= arr.length / 2; patternLength++) {
+                if (arr.length % patternLength === 0) {
+                    let isPattern = true;
+                    const pattern = arr.slice(0, patternLength);
+                    
+                    for (let i = patternLength; i < arr.length; i += patternLength) {
+                        const segment = arr.slice(i, i + patternLength);
+                        if (JSON.stringify(segment) !== JSON.stringify(pattern)) {
+                            isPattern = false;
+                            break;
+                        }
+                    }
+                    
+                    if (isPattern) {
+                        return patternLength;
+                    }
+                }
+            }
+            return arr.length;
+        }
+
+        function updateWorkoutStructure() {
+            createWorkoutStructure();
         }
 
         function completeExercise() {
