@@ -525,13 +525,13 @@
 
         <div id="daySelector" class="day-selector">
             <button class="day-btn" onclick="startWorkout(1)">
-                Day 1: Pull/Push Power + Upper Skills
+                Day 1: Push (Upper Body Pushing & Skill Work)
             </button>
             <button class="day-btn" onclick="startWorkout(2)">
-                Day 2: Strength + Lower Skills + Core
+                Day 2: Pull (Upper Body Pulling & Skill Work)
             </button>
             <button class="day-btn" onclick="startWorkout(3)">
-                Day 3: Hybrid + Advanced Skills + Arms
+                Day 3: Legs & Core
             </button>
         </div>
 
@@ -569,144 +569,43 @@
     <script>
         const workouts = {
             1: {
-                title: "Day 1: Pull/Push Power + Upper Skills",
+                title: "Day 1: Push (Upper Body Pushing & Skill Work)",
                 exercises: [
-                    // Warm-up
-                    { type: "warmup", name: "Arm Circles + Wrist Prep", details: "45s" },
-                    { type: "warmup", name: "Scapula Pushups", details: "10 reps" },
-                    { type: "warmup", name: "Hollow Body Rocks", details: "10 reps" },
-                    { type: "warmup", name: "Band Pull-Aparts", details: "15 reps" },
-                    
-                    // Block A (3 rounds)
-                    { type: "block-a", name: "Pull-ups", details: "To failure" },
-                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
-                    
-                    { type: "block-a", name: "Pull-ups", details: "To failure" },
-                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
-                    
-                    { type: "block-a", name: "Pull-ups", details: "To failure" },
-                    { type: "block-a", name: "Ring/Band Rows", details: "12-15 reps" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    { type: "block-a", name: "Frog Stand", details: "20-30s hold" },
-                    
-                    // Block B (3 rounds)
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
-                    
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
-                    
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Diamond Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pike Pushups", details: "8-12 reps" },
-                    { type: "block-b", name: "Pseudo Planche Lean", details: "15-25s hold" },
-                    
-                    // Finisher
-                    { type: "finisher", name: "Handstand Practice", details: "3x 20-40s" },
-                    { type: "finisher", name: "Dumbbell Bicep Curls", details: "12-15 reps" },
-                    { type: "finisher", name: "Band Tricep Extensions", details: "15-20 reps" }
+                    { type: "warmup", name: "Shoulder mobility", details: "e.g., band pull-aparts, light pushups" },
+                    { type: "main", name: "Ring dips", details: "3 sets of 4-6 reps" },
+                    { type: "main", name: "Pike pushups", details: "3 sets of 6-8 reps" },
+                    { type: "main", name: "Diamond pushups", details: "3 sets of 8-12 reps" },
+                    { type: "main", name: "Dumbbell overhead press", details: "3 sets of 8-12 reps" },
+                    { type: "skill", name: "Handstand progression", details: "3-5 sets of short holds/attempts" },
+                    { type: "finisher", name: "Triceps extensions (dumbbell or band)", details: "2-3 sets of 10-15 reps" }
                 ]
             },
             2: {
-                title: "Day 2: Strength + Lower Skills + Core",
+                title: "Day 2: Pull (Upper Body Pulling & Skill Work)",
                 exercises: [
-                    // Warm-up
-                    { type: "warmup", name: "Hip Circles + Leg Swings", details: "45s" },
-                    { type: "warmup", name: "Glute Bridges", details: "12 reps" },
-                    { type: "warmup", name: "Cat-Cow Stretches", details: "30s" },
-                    { type: "warmup", name: "Band Squats", details: "15 reps" },
-                    
-                    // Block A (3 rounds)
-                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
-                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
-                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
-                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
-                    
-                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
-                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
-                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
-                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
-                    
-                    { type: "block-a", name: "Pistol Squats", details: "Max each leg" },
-                    { type: "block-a", name: "Dumbbell Goblet Squats", details: "15-20 reps" },
-                    { type: "block-a", name: "Archer Pushups", details: "6-10 each side" },
-                    { type: "block-a", name: "L-Sit Hold", details: "15-30s" },
-                    
-                    // Block B (3 rounds)
-                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
-                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
-                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
-                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
-                    
-                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
-                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
-                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
-                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
-                    
-                    { type: "block-b", name: "Single-leg Deadlifts", details: "8-12 each leg" },
-                    { type: "block-b", name: "Band-Assisted Nordics", details: "5-8 reps" },
-                    { type: "block-b", name: "Ring Rows (wide grip)", details: "12-15 reps" },
-                    { type: "block-b", name: "Hanging Knee Raises", details: "10-15 reps" },
-                    
-                    // Finisher
-                    { type: "finisher", name: "Jump Squats", details: "15-20 reps" },
-                    { type: "finisher", name: "Hollow Body Hold", details: "30-45s" },
-                    { type: "finisher", name: "Plank to Pike", details: "10-15 reps" }
+                    { type: "warmup", name: "Thoracic mobility", details: "e.g., scapular pulls, light ring rows" },
+                    { type: "main", name: "Pull-ups", details: "3 sets of 4-6 reps" },
+                    { type: "main", name: "Ring rows", details: "3 sets of 8-12 reps" },
+                    { type: "main", name: "Chinups", details: "3 sets of 6-8 reps" },
+                    { type: "main", name: "Band face pulls", details: "3 sets of 12-15 reps" },
+                    { type: "skill", name: "Front lever progression", details: "3 sets of holds/attempts" },
+                    { type: "skill", name: "Back lever progression", details: "3 sets of holds/attempts" },
+                    { type: "finisher", name: "Dumbbell bicep curls", details: "2-3 sets of 10-12 reps" },
+                    { type: "finisher", name: "Dumbbell hammer curls", details: "2-3 sets of 10-12 reps" }
                 ]
             },
             3: {
-                title: "Day 3: Hybrid + Advanced Skills + Arms",
+                title: "Day 3: Legs & Core",
                 exercises: [
-                    // Warm-up
-                    { type: "warmup", name: "Full Body Flow", details: "45s" },
-                    { type: "warmup", name: "Hollow Rocks", details: "12 reps" },
-                    { type: "warmup", name: "Pike Pulses", details: "12 reps" },
-                    { type: "warmup", name: "Wrist Prep + Band Pulls", details: "30s" },
-                    
-                    // Block A (3 rounds)
-                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
-                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
-                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    
-                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
-                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
-                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    
-                    { type: "block-a", name: "Wide Pushups", details: "To failure" },
-                    { type: "block-a", name: "Front Lever Progression", details: "15-25s hold" },
-                    { type: "block-a", name: "Close-Grip Pushups", details: "To failure" },
-                    { type: "block-a", name: "Chin-ups", details: "To failure" },
-                    
-                    // Block B (3 rounds)
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
-                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
-                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
-                    
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
-                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
-                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
-                    
-                    { type: "block-b", name: "Ring Dips", details: "To failure" },
-                    { type: "block-b", name: "Back Lever Progression", details: "10-20s hold" },
-                    { type: "block-b", name: "Dumbbell Overhead Press", details: "10-15 reps" },
-                    { type: "block-b", name: "Band Face Pulls", details: "15-20 reps" },
-                    
-                    // Finisher
-                    { type: "finisher", name: "Handstand Pushup Progression", details: "3-8 reps" },
-                    { type: "finisher", name: "Dumbbell Hammer Curls", details: "12-15 reps" },
-                    { type: "finisher", name: "Band Tricep Pushdowns", details: "15-20 reps" }
+                    { type: "warmup", name: "Hip mobility", details: "e.g., bodyweight squats, leg swings" },
+                    { type: "main", name: "Pistol squats", details: "3 sets of 4-6 reps per leg" },
+                    { type: "main", name: "Single leg deadlifts", details: "3 sets of 6-8 reps per leg" },
+                    { type: "main", name: "Nordic curls", details: "2-3 sets of 4-6 reps" },
+                    { type: "main", name: "L-sit holds", details: "3 sets of 10-20 seconds" },
+                    { type: "main", name: "Hanging knee raises", details: "3 sets of 10-15 reps" },
+                    { type: "finisher", name: "Jump squats", details: "2-3 sets of 8-10 reps" },
+                    { type: "finisher", name: "Hollow body holds", details: "2-3 sets of 20-30 seconds" },
+                    { type: "finisher", name: "Plank to pike", details: "2-3 sets of 10-12 reps" }
                 ]
             }
         };
