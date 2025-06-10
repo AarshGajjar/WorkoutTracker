@@ -6,78 +6,463 @@
     <title>Calisthenics Tracker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #000; color: #fff; min-height: 100vh; padding: 10px; overflow-x: hidden; }
-        .container { max-width: 400px; margin: 0 auto; min-height: calc(100vh - 20px); display: flex; flex-direction: column; }
-        .header { text-align: center; padding: 15px 0; border-bottom: 1px solid #333; margin-bottom: 20px; flex-shrink: 0; }
-        .header h1 { font-size: 16px; font-weight: 300; letter-spacing: 2px; }
-        .day-selector { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 10px; }
-        .day-btn { background: transparent; color: #fff; border: 1px solid #333; padding: 18px 15px; font-size: 13px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-align: center; line-height: 1.3; }
-        .day-btn:hover { border-color: #fff; background: #fff; color: #000; }
-        .workout-container { display: none; flex: 1; flex-direction: column; min-height: calc(100vh - 20px); }
-        .workout-header { text-align: center; padding: 10px 0 15px 0; border-bottom: 1px solid #333; margin-bottom: 20px; flex-shrink: 0; }
-        .workout-title { font-size: 11px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; line-height: 1.3; }
-        .circuit-counter { text-align: center; margin-bottom: 15px; flex-shrink: 0; }
-        .circuit-counter-text { font-size: 10px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; opacity: 0.5; margin-bottom: 5px; }
-        .circuit-dots { display: flex; justify-content: center; gap: 8px; }
-        .circuit-dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #333; transition: all 0.2s ease; }
-        .circuit-dot.active { background: #fff; border-color: #fff; }
-        .circuit-dot.completed { background: #333; border-color: #333; }
-        .circle-container { position: relative; width: 280px; height: 280px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .progress-ring { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
-        .progress-ring-bg { fill: none; stroke: #333; stroke-width: 3; }
-        .progress-ring-fill { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
-        .exercise-circle { width: 240px; height: 240px; border: 1px solid #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 35px; background: #000; position: relative; z-index: 2; }
-        .exercise-type { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; margin-bottom: 15px; }
-        .exercise-name { font-size: 16px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; max-width: 180px; }
-        .exercise-details { font-size: 13px; opacity: 0.7; margin-bottom: 18px; line-height: 1.3; }
-        .complete-btn { background: transparent; color: #fff; border: 1px solid #fff; padding: 12px 24px; font-size: 11px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; }
-        .complete-btn:hover { background: #fff; color: #000; }
-        .exercise-list-container { flex: 1; display: flex; flex-direction: column; border-top: 1px solid #333; padding-top: 15px; min-height: 0; }
-        .exercise-list { display: flex; gap: 12px; overflow-x: auto; padding: 0 0 15px 0; scrollbar-width: none; -ms-overflow-style: none; flex-shrink: 0; }
-        .exercise-list::-webkit-scrollbar { display: none; }
-        .exercise-item { min-width: 110px; padding: 12px 10px; border: 1px solid #333; text-align: center; transition: all 0.2s ease; background: transparent; flex-shrink: 0; }
-        .exercise-item.current { border-color: #fff; background: #fff; color: #000; }
-        .exercise-item.completed { opacity: 0.3; border-color: #333; }
-        .exercise-item-name { font-size: 10px; font-weight: 300; margin-bottom: 5px; line-height: 1.2; }
-        .exercise-item-details { font-size: 8px; opacity: 0.7; }
-        .exercise-item.current .exercise-item-details { opacity: 0.5; }
-        .back-btn { background: transparent; color: #fff; border: 1px solid #333; padding: 8px 12px; font-size: 10px; cursor: pointer; margin-bottom: 15px; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; width: fit-content; flex-shrink: 0; }
-        .back-btn:hover { border-color: #fff; }
-        .completion-screen { display: none; flex: 1; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-        .completion-title { font-size: 18px; font-weight: 300; margin-bottom: 10px; letter-spacing: 2px; }
-        .completion-message { font-size: 12px; opacity: 0.7; margin-bottom: 30px; line-height: 1.5; }
-        .restart-btn { background: transparent; color: #fff; border: 1px solid #fff; padding: 15px 25px; font-size: 11px; font-weight: 300; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; text-transform: uppercase; }
-        .restart-btn:hover { background: #fff; color: #000; }
-        @media (max-width: 400px) {
-            body { padding: 8px; }
-            .container { min-height: calc(100vh - 16px); }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; 
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
+            color: #fff; 
+            min-height: 100vh; 
+            padding: 15px; 
+            overflow-x: hidden; 
+        }
+        .container { 
+            max-width: 450px; 
+            margin: 0 auto; 
+            min-height: calc(100vh - 30px); 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .header { 
+            text-align: center; 
+            padding: 25px 0; 
+            margin-bottom: 30px; 
+            flex-shrink: 0;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+        .header h1 { 
+            font-size: 22px; 
+            font-weight: 200; 
+            letter-spacing: 4px; 
+            opacity: 0.9;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        .day-selector { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            gap: 20px; 
+            padding: 0 15px; 
+        }
+        .day-btn { 
+            background: linear-gradient(145deg, #0a0a0a, #050505);
+            color: #fff; 
+            border: 1px solid #222; 
+            padding: 28px 25px; 
+            font-size: 16px; 
+            font-weight: 300; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            letter-spacing: 1px; 
+            text-align: center; 
+            line-height: 1.4;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .day-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+        .day-btn:hover::before {
+            left: 100%;
+        }
+        .day-btn:hover { 
+            border-color: #444; 
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .workout-container { 
+            display: none; 
+            flex: 1; 
+            flex-direction: column; 
+            min-height: calc(100vh - 30px); 
+        }
+        .workout-header { 
+            text-align: center; 
+            padding: 20px 0 25px 0; 
+            margin-bottom: 25px; 
+            flex-shrink: 0;
+            position: relative;
+        }
+        .workout-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+        .workout-title { 
+            font-size: 13px; 
+            font-weight: 300; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            opacity: 0.8; 
+            line-height: 1.4; 
+        }
+        .circuit-counter { 
+            text-align: center; 
+            margin-bottom: 25px; 
+            flex-shrink: 0; 
+        }
+        .circuit-counter-text { 
+            font-size: 11px; 
+            font-weight: 300; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            opacity: 0.6; 
+            margin-bottom: 12px; 
+        }
+        .circuit-dots { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+        }
+        .circuit-dot { 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+            border: 1px solid #333; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .circuit-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #fff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .circuit-dot.active { 
+            border-color: #666; 
+            box-shadow: 0 0 12px rgba(255,255,255,0.2);
+        }
+        .circuit-dot.active::after {
+            opacity: 1;
+        }
+        .circuit-dot.completed { 
+            background: #333; 
+            border-color: #444; 
+        }
+        .circle-container { 
+            position: relative; 
+            width: 320px; 
+            height: 320px; 
+            margin: 0 auto 35px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0; 
+        }
+        .progress-ring { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            transform: rotate(-90deg); 
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
+        }
+        .progress-ring-bg { 
+            fill: none; 
+            stroke: #1a1a1a; 
+            stroke-width: 3; 
+        }
+        .progress-ring-fill { 
+            fill: none; 
+            stroke: #fff; 
+            stroke-width: 3; 
+            stroke-linecap: round; 
+            transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .exercise-circle { 
+            width: 280px; 
+            height: 280px; 
+            border: 1px solid #222; 
+            border-radius: 50%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            padding: 45px; 
+            background: radial-gradient(circle at center, #0f0f0f 0%, #050505 100%);
+            position: relative; 
+            z-index: 2;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3);
+        }
+        .exercise-type { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            opacity: 0.6; 
+            margin-bottom: 20px;
+            font-weight: 200;
+        }
+        .exercise-name { 
+            font-size: 20px; 
+            font-weight: 300; 
+            margin-bottom: 18px; 
+            line-height: 1.3; 
+            max-width: 220px;
+            opacity: 0.95;
+        }
+        .exercise-details { 
+            font-size: 15px; 
+            opacity: 0.7; 
+            margin-bottom: 25px; 
+            line-height: 1.3;
+            font-weight: 200;
+        }
+        .complete-btn { 
+            background: linear-gradient(145deg, #0a0a0a, #000);
+            color: #fff; 
+            border: 1px solid #333; 
+            padding: 16px 32px; 
+            font-size: 12px; 
+            font-weight: 300; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            border-radius: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        .complete-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.4s ease;
+        }
+        .complete-btn:hover::before {
+            left: 100%;
+        }
+        .complete-btn:hover { 
+            border-color: #555;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .navigation-buttons { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 25px; 
+            justify-content: center; 
+        }
+        .nav-btn { 
+            background: linear-gradient(145deg, #0a0a0a, #050505);
+            color: #fff; 
+            border: 1px solid #222; 
+            padding: 14px 20px; 
+            font-size: 11px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            letter-spacing: 1px; 
+            text-transform: uppercase;
+            border-radius: 1px;
+        }
+        .nav-btn:hover { 
+            border-color: #444; 
+            background: linear-gradient(145deg, #111, #0a0a0a);
+        }
+        .nav-btn:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+        .nav-btn:disabled:hover { 
+            border-color: #222; 
+            background: linear-gradient(145deg, #0a0a0a, #050505);
+        }
+        .back-btn { 
+            background: transparent; 
+            color: #fff; 
+            border: 1px solid #222; 
+            padding: 12px 20px; 
+            font-size: 11px; 
+            cursor: pointer; 
+            margin-bottom: 20px; 
+            transition: all 0.3s ease; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            width: fit-content; 
+            flex-shrink: 0;
+            border-radius: 1px;
+            opacity: 0.8;
+        }
+        .back-btn:hover { 
+            border-color: #444; 
+            opacity: 1;
+        }
+        .completion-screen { 
+            display: none; 
+            flex: 1; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 30px; 
+        }
+        .completion-title { 
+            font-size: 26px; 
+            font-weight: 200; 
+            margin-bottom: 15px; 
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        .completion-message { 
+            font-size: 14px; 
+            opacity: 0.7; 
+            margin-bottom: 40px; 
+            line-height: 1.6;
+            font-weight: 200;
+        }
+        .restart-btn { 
+            background: linear-gradient(145deg, #0a0a0a, #050505);
+            color: #fff; 
+            border: 1px solid #333; 
+            padding: 20px 35px; 
+            font-size: 12px; 
+            font-weight: 300; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .restart-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+        .restart-btn:hover::before {
+            left: 100%;
+        }
+        .restart-btn:hover { 
+            border-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .exercise-list-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            border-top: 1px solid #1a1a1a; 
+            padding-top: 18px; 
+            min-height: 0; 
+            margin-top: 10px;
+        }
+        .exercise-list { 
+            display: flex; 
+            gap: 12px; 
+            overflow-x: auto; 
+            padding: 0 0 18px 0; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            flex-shrink: 0; 
+        }
+        .exercise-list::-webkit-scrollbar { 
+            display: none; 
+        }
+        .exercise-item { 
+            min-width: 115px; 
+            padding: 15px 12px; 
+            border: 1px solid #1a1a1a; 
+            text-align: center; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            background: linear-gradient(145deg, #0a0a0a, #050505);
+            flex-shrink: 0;
+            border-radius: 1px;
+        }
+        .exercise-item.current { 
+            border-color: #444; 
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .exercise-item.completed { 
+            opacity: 0.4; 
+            border-color: #111; 
+            background: #050505;
+        }
+        .exercise-item-name { 
+            font-size: 10px; 
+            font-weight: 300; 
+            margin-bottom: 6px; 
+            line-height: 1.3;
+            opacity: 0.9;
+        }
+        .exercise-item-details { 
+            font-size: 8px; 
+            opacity: 0.6;
+            font-weight: 200;
+        }
+        .exercise-item.current .exercise-item-details { 
+            opacity: 0.7; 
+        }
+        @media (max-width: 450px) {
+            body { padding: 12px; }
+            .container { min-height: calc(100vh - 24px); max-width: 100%; }
+            .circle-container { width: 300px; height: 300px; margin-bottom: 30px; }
+            .exercise-circle { width: 260px; height: 260px; padding: 40px; }
+            .exercise-name { font-size: 18px; max-width: 200px; }
+            .exercise-details { font-size: 14px; }
+            .complete-btn { padding: 14px 28px; font-size: 11px; }
+            .day-btn { padding: 25px 20px; font-size: 15px; }
+            .exercise-item { min-width: 120px; padding: 16px 12px; }
+            .exercise-item-name { font-size: 11px; }
+            .exercise-item-details { font-size: 9px; }
+        }
+        @media (max-width: 350px) {
+            .circle-container { width: 280px; height: 280px; }
+            .exercise-circle { width: 240px; height: 240px; padding: 35px; }
+            .exercise-name { font-size: 16px; max-width: 180px; }
+            .exercise-item { min-width: 110px; }
+        }
+        @media (max-height: 700px) and (orientation: landscape) {
+            .header { padding: 15px 0; margin-bottom: 20px; }
+            .header h1 { font-size: 18px; }
             .circle-container { width: 260px; height: 260px; margin-bottom: 20px; }
             .exercise-circle { width: 220px; height: 220px; padding: 30px; }
-            .exercise-name { font-size: 15px; max-width: 160px; }
-            .exercise-details { font-size: 12px; }
-            .complete-btn { padding: 10px 20px; font-size: 10px; }
-            .day-btn { padding: 16px 12px; font-size: 12px; }
-            .exercise-item { min-width: 100px; padding: 10px 8px; }
-            .exercise-item-name { font-size: 9px; }
-            .exercise-item-details { font-size: 7px; }
-        }
-        @media (max-width: 320px) {
-            .circle-container { width: 240px; height: 240px; }
-            .exercise-circle { width: 200px; height: 200px; padding: 25px; }
-            .exercise-name { font-size: 14px; max-width: 150px; }
-            .exercise-item { min-width: 90px; }
-        }
-        @media (max-height: 600px) and (orientation: landscape) {
-            .header { padding: 8px 0; margin-bottom: 10px; }
-            .header h1 { font-size: 14px; }
-            .circle-container { width: 200px; height: 200px; margin-bottom: 10px; }
-            .exercise-circle { width: 160px; height: 160px; padding: 20px; }
-            .exercise-name { font-size: 14px; margin-bottom: 8px; }
-            .exercise-details { font-size: 11px; margin-bottom: 12px; }
-            .complete-btn { padding: 8px 16px; font-size: 10px; }
-            .workout-header { padding: 8px 0 10px 0; margin-bottom: 10px; }
-            .exercise-list-container { padding-top: 10px; }
-            .circuit-counter { margin-bottom: 10px; }
+            .exercise-name { font-size: 16px; margin-bottom: 12px; }
+            .exercise-details { font-size: 13px; margin-bottom: 18px; }
+            .complete-btn { padding: 12px 24px; font-size: 11px; }
+            .workout-header { padding: 12px 0 18px 0; margin-bottom: 18px; }
+            .exercise-list-container { padding-top: 15px; }
+            .circuit-counter { margin-bottom: 15px; }
         }
     </style>
 </head>
@@ -107,11 +492,14 @@
                 </div>
             </div>
             <div class="circle-container">
-                <svg class="progress-ring" width="280" height="280">
-                    <circle class="progress-ring-bg" cx="140" cy="140" r="135"/>
-                    <circle id="progressRing" class="progress-ring-fill" cx="140" cy="140" r="135"/>
+                <svg class="progress-ring" width="320" height="320">
+                    <circle class="progress-ring-bg" cx="160" cy="160" r="155"/>
+                    <circle id="progressRing" class="progress-ring-fill" cx="160" cy="160" r="155"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
+            </div>
+            <div class="navigation-buttons">
+                <button id="prevButton" class="nav-btn" onclick="previousExercise()">← Previous</button>
             </div>
             <div class="exercise-list-container">
                 <div id="exerciseList" class="exercise-list"></div>
@@ -194,12 +582,14 @@
         let currentCircuit = 1;
         let warmupCompleted = false;
         let mainExerciseIndices = [];
+        let exerciseCompletionState = {}; // Track which exercises have been completed in each circuit
 
         function startWorkout(day) {
             currentWorkout = workouts[day];
             currentExerciseIndex = 0;
             currentCircuit = 1;
             warmupCompleted = false;
+            exerciseCompletionState = {};
             
             // Find main exercise indices
             mainExerciseIndices = [];
@@ -209,11 +599,39 @@
                 }
             });
             
+            // Initialize completion state for all main exercises across 3 circuits
+            for (let circuit = 1; circuit <= 3; circuit++) {
+                exerciseCompletionState[circuit] = {};
+                mainExerciseIndices.forEach(index => {
+                    exerciseCompletionState[circuit][index] = false;
+                });
+            }
+            
             document.getElementById('daySelector').style.display = 'none';
             document.getElementById('workoutContainer').style.display = 'flex';
             document.getElementById('completionScreen').style.display = 'none';
             updateWorkoutDisplay();
             createExerciseList();
+        }
+
+        function previousExercise() {
+            if (currentExerciseIndex > 0) {
+                currentExerciseIndex--;
+                
+                // If moving back to warmup from main, update warmup status
+                if (currentExerciseIndex < mainExerciseIndices[0]) {
+                    warmupCompleted = false;
+                }
+                
+                // If moving back from first main exercise of a circuit
+                const exercise = currentWorkout.exercises[currentExerciseIndex];
+                if (exercise.type === 'main' && currentCircuit > 1 && 
+                    mainExerciseIndices.indexOf(currentExerciseIndex) === mainExerciseIndices.length - 1) {
+                    currentCircuit--;
+                }
+                
+                updateWorkoutDisplay();
+            }
         }
 
         function updateWorkoutDisplay() {
@@ -240,144 +658,166 @@
             let completedExercises = 0;
             
             // Count completed warmup exercises
-            if (currentExerciseIndex <= warmupCount) {
-                completedExercises = currentExerciseIndex;
-            } else {
+            if (currentExerciseIndex >= mainExerciseIndices[0]) {
+                // All warmup exercises are completed
                 completedExercises = warmupCount;
+            } else {
+                // Only count up to current exercise for warmup
+                completedExercises = currentExerciseIndex;
             }
             
-            // Count completed main exercises
-            if (exercise.type === 'main') {
-                completedExercises += (currentCircuit - 1) * mainExercisesCount;
-                let mainPosition = mainExerciseIndices.indexOf(currentExerciseIndex);
-                completedExercises += mainPosition + 1;
-            } else if (exercise.type === 'finisher') {
-                // All main exercises are complete when we reach finisher
-                completedExercises += mainExercisesCount * 3;
-                completedExercises += currentExerciseIndex - mainExerciseIndices[mainExercisesCount - 1] - 1;
-            } else {
-                // For exercises after warmup but before first main
-                completedExercises = currentExerciseIndex;
+            // Count completed main exercises across all circuits
+            for (let circuit = 1; circuit <= 3; circuit++) {
+                mainExerciseIndices.forEach(index => {
+                    if (exerciseCompletionState[circuit]?.[index]) {
+                        completedExercises++;
+                    }
+                });
+            }
+            
+            // If we're in finisher exercises
+            if (exercise.type === 'finisher') {
+                // Count all main exercises from previous circuits as completed
+                const unaccountedMainExercises = mainExerciseIndices.length * 3 - 
+                    Object.values(exerciseCompletionState).reduce((acc, circuit) => 
+                        acc + Object.values(circuit).filter(Boolean).length, 0);
+                completedExercises += unaccountedMainExercises;
+                
+                // Add completed finisher exercises
+                const firstFinisherIndex = mainExerciseIndices[mainExerciseIndices.length - 1] + 1;
+                completedExercises += currentExerciseIndex - firstFinisherIndex;
             }
             
             // Adjust total exercises to account for 3 circuits of main exercises
             totalExercises = warmupCount + (mainExercisesCount * 3) + finisherCount;
             
+            // Calculate and update progress ring
             const progress = (completedExercises / totalExercises) * 100;
-            const circumference = 2 * Math.PI * 135;
             const progressRing = document.getElementById('progressRing');
-            progressRing.style.strokeDasharray = circumference;
+            const circumference = 2 * Math.PI * 155;
+            progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
             progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
             
+            // Update exercise display
             const exerciseCircle = document.getElementById('exerciseCircle');
             exerciseCircle.innerHTML = `
-                <div class="exercise-type">${exercise.type}</div>
+                <div class="exercise-type">${exercise.type.toUpperCase()}</div>
                 <div class="exercise-name">${exercise.name}</div>
                 <div class="exercise-details">${exercise.details}</div>
-                <button class="complete-btn" onclick="completeExercise()">
-                    ${isWorkoutComplete() ? 'Finish' : 'Complete'}
-                </button>
+                <button class="complete-btn" onclick="completeExercise()">Complete</button>
             `;
-            updateExerciseList();
-        }
-
-        function updateCircuitCounter() {
-            const dots = document.querySelectorAll('.circuit-dot');
-            dots.forEach((dot, index) => {
-                dot.className = 'circuit-dot';
-                if (index + 1 < currentCircuit) {
-                    dot.classList.add('completed');
-                } else if (index + 1 === currentCircuit) {
-                    dot.classList.add('active');
-                }
-            });
-        }
-
-        function createExerciseList() {
-            const exerciseList = document.getElementById('exerciseList');
-            const exercises = currentWorkout.exercises;
-            exerciseList.innerHTML = exercises.map((exercise, index) => `
-                <div class="exercise-item ${index === currentExerciseIndex ? 'current' : ''} ${index < currentExerciseIndex ? 'completed' : ''}">
-                    <div class="exercise-item-name">${exercise.name}</div>
-                    <div class="exercise-item-details">${exercise.details}</div>
-                </div>
-            `).join('');
-        }
-
-        function updateExerciseList() {
-            const items = document.querySelectorAll('.exercise-item');
-            items.forEach((item, index) => {
-                item.className = 'exercise-item';
-                if (index === currentExerciseIndex) {
-                    item.classList.add('current');
-                    item.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-                } else if (index < currentExerciseIndex) {
-                    item.classList.add('completed');
-                }
-            });
-        }
-
-        function isWorkoutComplete() {
-            const exercise = currentWorkout.exercises[currentExerciseIndex];
             
-            // If we're at the last finisher exercise, workout is complete
-            if (exercise.type === 'finisher' && currentExerciseIndex === currentWorkout.exercises.length - 1) {
-                return true;
-            }
+            // Update navigation buttons
+            document.getElementById('prevButton').disabled = currentExerciseIndex === 0;
             
-            return false;
+            // Update exercise list highlighting
+            updateExerciseListHighlight();
         }
 
         function completeExercise() {
             const exercise = currentWorkout.exercises[currentExerciseIndex];
             
+            // Mark exercise as completed in the current circuit if it's a main exercise
             if (exercise.type === 'main') {
-                // Find current position in main exercises
-                const mainExercisePosition = mainExerciseIndices.indexOf(currentExerciseIndex);
-                
-                if (mainExercisePosition === mainExerciseIndices.length - 1) {
-                    // Completed last main exercise in current circuit
-                    if (currentCircuit < 3) {
-                        // Go to next circuit
-                        currentCircuit++;
-                        currentExerciseIndex = mainExerciseIndices[0]; // Go back to first main exercise
-                    } else {
-                        // Completed all 3 circuits, move to finisher exercises
-                        currentExerciseIndex++;
-                    }
-                } else {
-                    // Move to next main exercise in current circuit
-                    currentExerciseIndex = mainExerciseIndices[mainExercisePosition + 1];
-                }
-            } else {
-                // For warmup and finisher exercises, just move to next
-                currentExerciseIndex++;
-                
-                // Mark warmup as completed when moving to main exercises
-                if (!warmupCompleted && currentExerciseIndex < currentWorkout.exercises.length && 
-                    currentWorkout.exercises[currentExerciseIndex].type === 'main') {
-                    warmupCompleted = true;
-                }
+                exerciseCompletionState[currentCircuit][currentExerciseIndex] = true;
             }
             
-            if (currentExerciseIndex >= currentWorkout.exercises.length) {
-                // Workout complete
-                document.getElementById('workoutContainer').style.display = 'none';
-                document.getElementById('completionScreen').style.display = 'flex';
+            // Determine next exercise
+            if (exercise.type === 'warmup' && currentExerciseIndex === mainExerciseIndices[0] - 1) {
+                // Moving from warmup to main exercises
+                warmupCompleted = true;
+                currentExerciseIndex = mainExerciseIndices[0];
+            } else if (exercise.type === 'main') {
+                const currentMainIndex = mainExerciseIndices.indexOf(currentExerciseIndex);
+                
+                if (currentMainIndex === mainExerciseIndices.length - 1) {
+                    // End of main exercises for current circuit
+                    if (currentCircuit < 3) {
+                        // Move to next circuit
+                        currentCircuit++;
+                        currentExerciseIndex = mainExerciseIndices[0];
+                    } else {
+                        // All circuits completed, move to finishers
+                        currentExerciseIndex = mainExerciseIndices[mainExerciseIndices.length - 1] + 1;
+                    }
+                } else {
+                    // Move to next main exercise
+                    currentExerciseIndex = mainExerciseIndices[currentMainIndex + 1];
+                }
+            } else if (exercise.type === 'finisher') {
+                if (currentExerciseIndex === currentWorkout.exercises.length - 1) {
+                    // Workout complete
+                    showCompletionScreen();
+                    return;
+                } else {
+                    // Move to next finisher
+                    currentExerciseIndex++;
+                }
             } else {
-                updateWorkoutDisplay();
+                // Standard progression
+                currentExerciseIndex++;
+            }
+            
+            updateWorkoutDisplay();
+        }
+
+        function updateCircuitCounter() {
+            const dots = document.querySelectorAll('.circuit-dot');
+            dots.forEach((dot, index) => {
+                const circuitNum = index + 1;
+                dot.classList.toggle('active', circuitNum === currentCircuit);
+                dot.classList.toggle('completed', circuitNum < currentCircuit);
+            });
+        }
+
+        function createExerciseList() {
+            const exerciseList = document.getElementById('exerciseList');
+            exerciseList.innerHTML = '';
+            
+            currentWorkout.exercises.forEach((exercise, index) => {
+                const exerciseItem = document.createElement('div');
+                exerciseItem.className = 'exercise-item';
+                exerciseItem.innerHTML = `
+                    <div class="exercise-item-name">${exercise.name}</div>
+                    <div class="exercise-item-details">${exercise.details}</div>
+                `;
+                exerciseList.appendChild(exerciseItem);
+            });
+        }
+
+        function updateExerciseListHighlight() {
+            const exerciseList = document.getElementById('exerciseList');
+            const exerciseItems = document.querySelectorAll('.exercise-item');
+            
+            // Update class states first
+            exerciseItems.forEach((item, index) => {
+                item.classList.remove('current', 'completed');
+                
+                if (index === currentExerciseIndex) {
+                    item.classList.add('current');
+                } else if (index < currentExerciseIndex || 
+                         (exerciseCompletionState[currentCircuit]?.[index] && 
+                          currentWorkout.exercises[index].type === 'main')) {
+                    item.classList.add('completed');
+                }
+            });
+
+            // Get the current item and scroll it into view
+            const currentItem = exerciseItems[currentExerciseIndex];
+            if (currentItem) {
+                currentItem.scrollIntoView({ behavior: 'smooth', inline: 'center' });
             }
         }
 
+        function showCompletionScreen() {
+            document.getElementById('workoutContainer').style.display = 'none';
+            document.getElementById('completionScreen').style.display = 'flex';
+        }
+
         function goBack() {
-            document.getElementById('daySelector').style.display = 'flex';
             document.getElementById('workoutContainer').style.display = 'none';
             document.getElementById('completionScreen').style.display = 'none';
-            currentWorkout = null;
-            currentExerciseIndex = 0;
-            currentCircuit = 1;
-            warmupCompleted = false;
-            mainExerciseIndices = [];
+            document.getElementById('daySelector').style.display = 'flex';
         }
     </script>
 </body>
