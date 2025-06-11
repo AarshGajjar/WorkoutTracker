@@ -180,10 +180,12 @@
             flex-shrink: 0; 
         }
         .progress-ring { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            transform: rotate(-90deg); 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
             filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
         }
         .progress-ring-bg { 
@@ -197,6 +199,7 @@
             stroke-width: 3; 
             stroke-linecap: round; 
             transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: stroke-dashoffset;
         }
         .exercise-circle { 
             width: 280px; 
@@ -206,7 +209,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: space-between; 
             text-align: center; 
             padding: 45px; 
             background: radial-gradient(circle at center, #0f0f0f 0%, #050505 100%);
@@ -248,9 +251,11 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             letter-spacing: 2px; 
             text-transform: uppercase;
-            border-radius: 1px;
+            border-radius: 2px;
             position: relative;
             overflow: hidden;
+            margin: 15px 0;
+            min-width: 160px;
         }
         .complete-btn::before {
             content: '';
@@ -260,15 +265,42 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.4s ease;
+            transition: left 0.5s ease;
         }
         .complete-btn:hover::before {
             left: 100%;
         }
-        .complete-btn:hover { 
-            border-color: #555;
+        .complete-btn:hover {
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            border-color: #444;
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .complete-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .prev-btn-small {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #222;
+            padding: 8px 16px;
+            font-size: 10px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 1px;
+            opacity: 0.7;
+        }
+        .prev-btn-small:hover {
+            opacity: 1;
+            border-color: #333;
+        }
+        .prev-btn-small:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
         .navigation-buttons { 
             display: flex; 
@@ -384,6 +416,8 @@
             padding-top: 18px; 
             min-height: 0; 
             margin-top: 10px;
+            overflow: hidden; /* Ensure container clips the padding */
+            position: relative; /* For proper overflow control */
         }
         .exercise-list { 
             display: flex; 
@@ -392,7 +426,11 @@
             padding: 0 0 18px 0; 
             scrollbar-width: none; 
             -ms-overflow-style: none; 
-            flex-shrink: 0; 
+            flex-shrink: 0;
+            scroll-behavior: smooth; /* Add smooth scrolling */
+            scroll-padding: 0 50%; /* Center the items */
+            padding-left: 50%; /* Start items from center */
+            padding-right: 50%; /* End with center space */
         }
         .exercise-list::-webkit-scrollbar { 
             display: none; 
@@ -436,8 +474,16 @@
         @media (max-width: 450px) {
             body { padding: 12px; }
             .container { min-height: calc(100vh - 24px); max-width: 100%; }
-            .circle-container { width: 300px; height: 300px; margin-bottom: 30px; }
-            .exercise-circle { width: 260px; height: 260px; padding: 40px; }
+            .circle-container { 
+                width: 300px; 
+                height: 300px; 
+                margin: 0 auto 30px; 
+            }
+            .exercise-circle { 
+                width: 260px; 
+                height: 260px; 
+                padding: 40px;
+            }
             .exercise-name { font-size: 18px; max-width: 200px; }
             .exercise-details { font-size: 14px; }
             .complete-btn { padding: 14px 28px; font-size: 11px; }
@@ -447,16 +493,41 @@
             .exercise-item-details { font-size: 9px; }
         }
         @media (max-width: 350px) {
-            .circle-container { width: 280px; height: 280px; }
-            .exercise-circle { width: 240px; height: 240px; padding: 35px; }
+            .circle-container { 
+                width: 280px; 
+                height: 280px; 
+            }
+            .exercise-circle { 
+                width: 240px; 
+                height: 240px; 
+                padding: 35px; 
+            }
             .exercise-name { font-size: 16px; max-width: 180px; }
             .exercise-item { min-width: 110px; }
         }
         @media (max-height: 700px) and (orientation: landscape) {
             .header { padding: 15px 0; margin-bottom: 20px; }
             .header h1 { font-size: 18px; }
-            .circle-container { width: 260px; height: 260px; margin-bottom: 20px; }
-            .exercise-circle { width: 220px; height: 220px; padding: 30px; }
+            .circle-container { 
+                width: 260px; 
+                height: 260px; 
+                margin: 0 auto 20px;
+            }
+            .exercise-circle { 
+                width: 220px; 
+                height: 220px; 
+                padding: 30px;
+            }
+            .progress-ring {
+                transform: rotate(-90deg);
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .progress-ring {
+                width: 260px;
+                height: 260px;
+            }
             .exercise-name { font-size: 16px; margin-bottom: 12px; }
             .exercise-details { font-size: 13px; margin-bottom: 18px; }
             .complete-btn { padding: 12px 24px; font-size: 11px; }
@@ -492,14 +563,11 @@
                 </div>
             </div>
             <div class="circle-container">
-                <svg class="progress-ring" width="320" height="320">
+                <svg class="progress-ring" viewBox="0 0 320 320">
                     <circle class="progress-ring-bg" cx="160" cy="160" r="155"/>
                     <circle id="progressRing" class="progress-ring-fill" cx="160" cy="160" r="155"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
-            </div>
-            <div class="navigation-buttons">
-                <button id="prevButton" class="nav-btn" onclick="previousExercise()">← Previous</button>
             </div>
             <div class="exercise-list-container">
                 <div id="exerciseList" class="exercise-list"></div>
@@ -694,21 +762,26 @@
             // Calculate and update progress ring
             const progress = (completedExercises / totalExercises) * 100;
             const progressRing = document.getElementById('progressRing');
-            const circumference = 2 * Math.PI * 155;
+            const radius = 155;
+            const circumference = 2 * Math.PI * radius;
             progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
             progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
             
             // Update exercise display
             const exerciseCircle = document.getElementById('exerciseCircle');
             exerciseCircle.innerHTML = `
-                <div class="exercise-type">${exercise.type.toUpperCase()}</div>
+                <div class="exercise-type">${exercise.type === 'warmup' ? 'WARMUP' : exercise.type === 'finisher' ? 'FINISHER' : ''}</div>
                 <div class="exercise-name">${exercise.name}</div>
                 <div class="exercise-details">${exercise.details}</div>
                 <button class="complete-btn" onclick="completeExercise()">Complete</button>
+                <button class="prev-btn-small" onclick="previousExercise()" ${currentExerciseIndex === 0 ? 'disabled' : ''}>Previous</button>
             `;
             
-            // Update navigation buttons
-            document.getElementById('prevButton').disabled = currentExerciseIndex === 0;
+            // Remove the old navigation buttons section
+            const navButtons = document.querySelector('.navigation-buttons');
+            if (navButtons) {
+                navButtons.remove();
+            }
             
             // Update exercise list highlighting
             updateExerciseListHighlight();
@@ -802,10 +875,14 @@
                 }
             });
 
-            // Get the current item and scroll it into view
-            const currentItem = exerciseItems[currentExerciseIndex];
-            if (currentItem) {
-                currentItem.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+            // Center the current exercise in the scrollable list
+            const currentExerciseItem = document.querySelector('.exercise-item.current');
+            if (currentExerciseItem) {
+                currentExerciseItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
             }
         }
 
