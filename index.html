@@ -6,66 +6,65 @@
     <title>Calisthenics Tracker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; overflow-y: auto; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; 
-            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
-            color: #fff; 
-            min-height: 100vh; 
-            padding: 15px; 
-            overflow-x: hidden; 
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            line-height: 1.6;
         }
         .container { 
-            max-width: 450px; 
+            max-width: 420px; 
             margin: 0 auto; 
-            min-height: calc(100vh - 30px); 
+            min-height: calc(100vh - 40px); 
             display: flex; 
-            flex-direction: column; 
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
         }
         .header { 
             text-align: center; 
-            padding: 25px 0; 
-            margin-bottom: 30px; 
+            padding: 32px 0 24px; 
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 0;
             flex-shrink: 0;
-            position: relative;
-        }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #333, transparent);
         }
         .header h1 { 
-            font-size: 22px; 
-            font-weight: 200; 
+            font-size: 16px; 
+            font-weight: 500; 
             letter-spacing: 4px; 
+            color: #ffffff;
+            text-transform: uppercase;
             opacity: 0.9;
-            text-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
         .day-selector { 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
-            gap: 20px; 
-            padding: 0 15px; 
+            gap: 16px; 
+            padding: 40px 24px;
         }
         .day-btn { 
-            background: linear-gradient(145deg, #0a0a0a, #050505);
-            color: #fff; 
-            border: 1px solid #222; 
-            padding: 28px 25px; 
-            font-size: 16px; 
-            font-weight: 300; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            letter-spacing: 1px; 
-            text-align: center; 
+            background: rgba(255,255,255,0.03);
+            color: #e8e8e8;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 24px 20px;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            text-align: center;
             line-height: 1.4;
-            border-radius: 2px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
@@ -76,282 +75,273 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             transition: left 0.5s ease;
         }
         .day-btn:hover::before {
             left: 100%;
         }
         .day-btn:hover { 
-            border-color: #444; 
-            background: linear-gradient(145deg, #111, #0a0a0a);
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .workout-container { 
             display: none; 
             flex: 1; 
             flex-direction: column; 
-            min-height: calc(100vh - 30px); 
+            min-height: calc(100vh - 40px);
+            padding: 0 24px 24px;
         }
         .workout-header { 
             text-align: center; 
-            padding: 20px 0 25px 0; 
-            margin-bottom: 25px; 
+            padding: 20px 0 24px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 24px; 
             flex-shrink: 0;
-            position: relative;
-        }
-        .workout-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #333, transparent);
         }
         .workout-title { 
-            font-size: 13px; 
-            font-weight: 300; 
+            font-size: 12px; 
+            font-weight: 500; 
             letter-spacing: 1.5px; 
             text-transform: uppercase; 
-            opacity: 0.8; 
-            line-height: 1.4; 
-        }
-        .circuit-counter { 
-            text-align: center; 
-            margin-bottom: 25px; 
-            flex-shrink: 0; 
-        }
-        .circuit-counter-text { 
-            font-size: 11px; 
-            font-weight: 300; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            opacity: 0.6; 
-            margin-bottom: 12px; 
-        }
-        .circuit-dots { 
-            display: flex; 
-            justify-content: center; 
-            gap: 15px; 
-        }
-        .circuit-dot { 
-            width: 8px; 
-            height: 8px; 
-            border-radius: 50%; 
-            border: 1px solid #333; 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-        .circuit-dot::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #fff;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .circuit-dot.active { 
-            border-color: #666; 
-            box-shadow: 0 0 12px rgba(255,255,255,0.2);
-        }
-        .circuit-dot.active::after {
-            opacity: 1;
-        }
-        .circuit-dot.completed { 
-            background: #333; 
-            border-color: #444; 
+            opacity: 0.7; 
+            line-height: 1.4;
         }
         .circle-container { 
             position: relative; 
-            width: 320px; 
-            height: 320px; 
-            margin: 0 auto 35px; 
+            width: 300px; 
+            height: 300px; 
+            margin: 0 auto 32px auto; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            flex-shrink: 0; 
+            flex-shrink: 0;
         }
         .progress-ring { 
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
+            position: absolute; 
+            top: 0; 
+            left: 0; 
             filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
         }
         .progress-ring-bg { 
             fill: none; 
-            stroke: #1a1a1a; 
-            stroke-width: 3; 
+            stroke: rgba(255,255,255,0.05); 
+            stroke-width: 2; 
         }
         .progress-ring-fill { 
             fill: none; 
-            stroke: #fff; 
-            stroke-width: 3; 
+            stroke: #ffffff; 
+            stroke-width: 2; 
             stroke-linecap: round; 
-            transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: stroke-dashoffset;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+            transform-origin: center; 
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
         }
         .exercise-circle { 
-            width: 280px; 
-            height: 280px; 
-            border: 1px solid #222; 
+            width: 260px; 
+            height: 260px; 
+            border: 1px solid rgba(255,255,255,0.08); 
             border-radius: 50%; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: space-between; 
+            justify-content: center; 
             text-align: center; 
-            padding: 45px; 
-            background: radial-gradient(circle at center, #0f0f0f 0%, #050505 100%);
+            padding: 40px; 
+            background: rgba(0,0,0,0.4); 
             position: relative; 
             z-index: 2;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(20px);
         }
         .exercise-type { 
-            font-size: 11px; 
+            font-size: 10px; 
             text-transform: uppercase; 
-            letter-spacing: 3px; 
-            opacity: 0.6; 
-            margin-bottom: 20px;
-            font-weight: 200;
+            letter-spacing: 2px; 
+            opacity: 0.5; 
+            margin-bottom: 16px;
+            font-weight: 500;
         }
         .exercise-name { 
-            font-size: 20px; 
-            font-weight: 300; 
-            margin-bottom: 18px; 
+            font-size: 18px; 
+            font-weight: 500; 
+            margin-bottom: 12px; 
             line-height: 1.3; 
-            max-width: 220px;
-            opacity: 0.95;
+            max-width: 180px;
+            color: #ffffff;
         }
         .exercise-details { 
-            font-size: 15px; 
-            opacity: 0.7; 
-            margin-bottom: 25px; 
-            line-height: 1.3;
-            font-weight: 200;
+            font-size: 13px; 
+            opacity: 0.6; 
+            margin-bottom: 24px; 
+            line-height: 1.4;
+            font-weight: 400;
         }
         .complete-btn { 
-            background: linear-gradient(145deg, #0a0a0a, #000);
-            color: #fff; 
-            border: 1px solid #333; 
-            padding: 16px 32px; 
-            font-size: 12px; 
-            font-weight: 300; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-            margin: 15px 0;
-            min-width: 160px;
-        }
-        .complete-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s ease;
-        }
-        .complete-btn:hover::before {
-            left: 100%;
-        }
-        .complete-btn:hover {
-            background: linear-gradient(145deg, #111, #0a0a0a);
-            border-color: #444;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .complete-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .prev-btn-small {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #222;
-            padding: 8px 16px;
-            font-size: 10px;
-            font-weight: 300;
+            background: rgba(255,255,255,0.06);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 12px 24px;
+            font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             letter-spacing: 1px;
             text-transform: uppercase;
-            border-radius: 1px;
-            opacity: 0.7;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
         }
-        .prev-btn-small:hover {
-            opacity: 1;
-            border-color: #333;
+        .complete-btn:hover { 
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
         }
-        .prev-btn-small:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+        .exercise-list-container { 
+            display: flex; 
+            flex-direction: column; 
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 0 0 24px 0; 
+            margin-bottom: 24px;
         }
-        .navigation-buttons { 
+        .exercise-list { 
             display: flex; 
             gap: 12px; 
-            margin-top: 25px; 
-            justify-content: center; 
+            overflow-x: auto; 
+            padding: 8px 0; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            scroll-behavior: smooth;
         }
-        .nav-btn { 
-            background: linear-gradient(145deg, #0a0a0a, #050505);
-            color: #fff; 
-            border: 1px solid #222; 
-            padding: 14px 20px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            letter-spacing: 1px; 
-            text-transform: uppercase;
-            border-radius: 1px;
-        }
-        .nav-btn:hover { 
-            border-color: #444; 
-            background: linear-gradient(145deg, #111, #0a0a0a);
-        }
-        .nav-btn:disabled { 
-            opacity: 0.3; 
-            cursor: not-allowed; 
-        }
-        .nav-btn:disabled:hover { 
-            border-color: #222; 
-            background: linear-gradient(145deg, #0a0a0a, #050505);
-        }
-        .back-btn { 
-            background: transparent; 
-            color: #fff; 
-            border: 1px solid #222; 
-            padding: 12px 20px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            margin-bottom: 20px; 
-            transition: all 0.3s ease; 
-            letter-spacing: 1px; 
-            text-transform: uppercase; 
-            width: fit-content; 
+        .exercise-list::-webkit-scrollbar { display: none; }
+        .exercise-item { 
+            min-width: 120px; 
+            padding: 12px 10px; 
+            border: 1px solid rgba(255,255,255,0.08); 
+            text-align: center; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            background: rgba(255,255,255,0.02); 
             flex-shrink: 0;
-            border-radius: 1px;
-            opacity: 0.8;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
-        .back-btn:hover { 
-            border-color: #444; 
-            opacity: 1;
+        .exercise-item.current { 
+            border-color: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.08); 
+            transform: scale(1.02);
         }
+        .exercise-item.completed { 
+            opacity: 0.4; 
+            border-color: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.01);
+        }
+        .exercise-item-name { 
+            font-size: 11px; 
+            font-weight: 500; 
+            margin-bottom: 4px; 
+            line-height: 1.3;
+            color: #ffffff;
+        }
+        .exercise-item-details { 
+            font-size: 9px; 
+            opacity: 0.6;
+            font-weight: 400;
+        }
+        .exercise-item.current .exercise-item-details { opacity: 0.8; }
+        .back-btn { 
+            background: rgba(255,255,255,0.04);
+            color: #e8e8e8;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 8px 16px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            width: fit-content;
+            flex-shrink: 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+        
+        .circuit-controls { 
+            width: 100%; 
+            max-width: 260px; 
+            margin: 0 auto 24px; 
+            text-align: center;
+        }
+        .circuit-slider-container { 
+            padding: 0 16px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .circuit-slider-label { 
+            font-size: 11px; 
+            opacity: 0.7; 
+            margin-bottom: 12px; 
+            display: block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .circuit-slider { 
+            width: 100%; 
+            -webkit-appearance: none; 
+            appearance: none; 
+            height: 3px; 
+            background: rgba(255,255,255,0.1); 
+            outline: none; 
+            cursor: pointer;
+            border-radius: 2px;
+        }
+        .circuit-slider::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            width: 16px; 
+            height: 16px; 
+            border-radius: 50%; 
+            background: #ffffff; 
+            cursor: pointer; 
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .circuit-slider::-moz-range-thumb { 
+            width: 16px; 
+            height: 16px; 
+            border-radius: 50%; 
+            background: #ffffff; 
+            cursor: pointer; 
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .circuit-counter { 
+            position: absolute; 
+            top: -32px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            display: flex; 
+            gap: 8px;
+        }
+        .circuit-dot { 
+            width: 6px; 
+            height: 6px; 
+            border-radius: 50%; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.1);
+        }
+        .circuit-dot.completed { 
+            background: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        
         .completion-screen { 
             display: none; 
             flex: 1; 
@@ -359,181 +349,89 @@
             justify-content: center; 
             align-items: center; 
             text-align: center; 
-            padding: 30px; 
+            padding: 40px 24px;
+            min-height: calc(100vh - 40px);
         }
         .completion-title { 
-            font-size: 26px; 
-            font-weight: 200; 
-            margin-bottom: 15px; 
+            font-size: 28px; 
+            font-weight: 300; 
+            margin-bottom: 16px; 
             letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+            color: #ffffff;
+            text-transform: uppercase;
         }
         .completion-message { 
             font-size: 14px; 
-            opacity: 0.7; 
+            opacity: 0.6; 
             margin-bottom: 40px; 
             line-height: 1.6;
-            font-weight: 200;
+            font-weight: 400;
         }
         .restart-btn { 
-            background: linear-gradient(145deg, #0a0a0a, #050505);
-            color: #fff; 
-            border: 1px solid #333; 
-            padding: 20px 35px; 
-            font-size: 12px; 
-            font-weight: 300; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            letter-spacing: 2px; 
+            background: rgba(255,255,255,0.06);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 16px 32px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1px;
             text-transform: uppercase;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-        .restart-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.5s ease;
-        }
-        .restart-btn:hover::before {
-            left: 100%;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
         .restart-btn:hover { 
-            border-color: #555;
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.3);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-        .exercise-list-container { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            border-top: 1px solid #1a1a1a; 
-            padding-top: 18px; 
-            min-height: 0; 
-            margin-top: 10px;
-            overflow: hidden; /* Ensure container clips the padding */
-            position: relative; /* For proper overflow control */
-        }
-        .exercise-list { 
-            display: flex; 
-            gap: 12px; 
-            overflow-x: auto; 
-            padding: 0 0 18px 0; 
-            scrollbar-width: none; 
-            -ms-overflow-style: none; 
-            flex-shrink: 0;
-            scroll-behavior: smooth; /* Add smooth scrolling */
-            scroll-padding: 0 50%; /* Center the items */
-            padding-left: 50%; /* Start items from center */
-            padding-right: 50%; /* End with center space */
-        }
-        .exercise-list::-webkit-scrollbar { 
-            display: none; 
-        }
-        .exercise-item { 
-            min-width: 115px; 
-            padding: 15px 12px; 
-            border: 1px solid #1a1a1a; 
-            text-align: center; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            background: linear-gradient(145deg, #0a0a0a, #050505);
-            flex-shrink: 0;
-            border-radius: 1px;
-        }
-        .exercise-item.current { 
-            border-color: #444; 
-            background: linear-gradient(145deg, #111, #0a0a0a);
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .exercise-item.completed { 
-            opacity: 0.4; 
-            border-color: #111; 
-            background: #050505;
-        }
-        .exercise-item-name { 
-            font-size: 10px; 
-            font-weight: 300; 
-            margin-bottom: 6px; 
-            line-height: 1.3;
-            opacity: 0.9;
-        }
-        .exercise-item-details { 
-            font-size: 8px; 
-            opacity: 0.6;
-            font-weight: 200;
-        }
-        .exercise-item.current .exercise-item-details { 
-            opacity: 0.7; 
-        }
-        @media (max-width: 450px) {
-            body { padding: 12px; }
-            .container { min-height: calc(100vh - 24px); max-width: 100%; }
-            .circle-container { 
-                width: 300px; 
-                height: 300px; 
-                margin: 0 auto 30px; 
+        
+        @media (max-width: 400px) {
+            body { padding: 16px; }
+            .container { 
+                min-height: calc(100vh - 32px);
+                border-radius: 20px;
             }
-            .exercise-circle { 
-                width: 260px; 
-                height: 260px; 
-                padding: 40px;
-            }
-            .exercise-name { font-size: 18px; max-width: 200px; }
-            .exercise-details { font-size: 14px; }
-            .complete-btn { padding: 14px 28px; font-size: 11px; }
-            .day-btn { padding: 25px 20px; font-size: 15px; }
-            .exercise-item { min-width: 120px; padding: 16px 12px; }
-            .exercise-item-name { font-size: 11px; }
-            .exercise-item-details { font-size: 9px; }
+            .circle-container { width: 260px; height: 260px; margin-bottom: 24px; }
+            .exercise-circle { width: 220px; height: 220px; padding: 32px; }
+            .exercise-name { font-size: 16px; max-width: 160px; }
+            .exercise-details { font-size: 12px; }
+            .complete-btn { padding: 10px 20px; font-size: 10px; }
+            .day-btn { padding: 20px 16px; font-size: 13px; }
+            .exercise-item { min-width: 100px; padding: 10px 8px; }
+            .exercise-item-name { font-size: 10px; }
+            .exercise-item-details { font-size: 8px; }
+            .day-selector { padding: 32px 20px; }
         }
-        @media (max-width: 350px) {
-            .circle-container { 
-                width: 280px; 
-                height: 280px; 
-            }
-            .exercise-circle { 
-                width: 240px; 
-                height: 240px; 
-                padding: 35px; 
-            }
-            .exercise-name { font-size: 16px; max-width: 180px; }
-            .exercise-item { min-width: 110px; }
+        @media (max-width: 320px) {
+            .circle-container { width: 240px; height: 240px; }
+            .exercise-circle { width: 200px; height: 200px; padding: 28px; }
+            .exercise-name { font-size: 15px; max-width: 150px; }
+            .exercise-item { min-width: 90px; }
         }
-        @media (max-height: 700px) and (orientation: landscape) {
-            .header { padding: 15px 0; margin-bottom: 20px; }
-            .header h1 { font-size: 18px; }
-            .circle-container { 
-                width: 260px; 
-                height: 260px; 
-                margin: 0 auto 20px;
-            }
-            .exercise-circle { 
-                width: 220px; 
-                height: 220px; 
-                padding: 30px;
-            }
-            .progress-ring {
-                transform: rotate(-90deg);
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-            .progress-ring {
-                width: 260px;
-                height: 260px;
-            }
-            .exercise-name { font-size: 16px; margin-bottom: 12px; }
-            .exercise-details { font-size: 13px; margin-bottom: 18px; }
-            .complete-btn { padding: 12px 24px; font-size: 11px; }
-            .workout-header { padding: 12px 0 18px 0; margin-bottom: 18px; }
-            .exercise-list-container { padding-top: 15px; }
-            .circuit-counter { margin-bottom: 15px; }
+        @media (max-height: 600px) and (orientation: landscape) {
+            .header { padding: 16px 0; margin-bottom: 8px; }
+            .header h1 { font-size: 14px; }
+            .circle-container { width: 200px; height: 200px; margin-bottom: 16px; }
+            .exercise-circle { width: 160px; height: 160px; padding: 20px; }
+            .exercise-name { font-size: 14px; margin-bottom: 8px; }
+            .exercise-details { font-size: 11px; margin-bottom: 12px; }
+            .complete-btn { padding: 8px 16px; font-size: 10px; }
+            .workout-header { padding: 12px 0 16px 0; margin-bottom: 16px; }
+            .exercise-list-container { padding-bottom: 16px; margin-bottom: 16px; }
+            .day-selector { padding: 24px 20px; }
+        }
+
+        /* Subtle animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .day-selector, .workout-container, .completion-screen {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -544,9 +442,9 @@
         </div>
 
         <div id="daySelector" class="day-selector">
-            <button class="day-btn" onclick="startWorkout(1)">Day 1: Pull/Push Power + Upper Skills</button>
-            <button class="day-btn" onclick="startWorkout(2)">Day 2: Strength + Lower Skills + Core</button>
-            <button class="day-btn" onclick="startWorkout(3)">Day 3: Hybrid + Advanced Skills + Arms</button>
+            <button class="day-btn" onclick="startWorkout(1)">Pull/Push Power + Upper Skills</button>
+            <button class="day-btn" onclick="startWorkout(2)">Strength + Lower Skills + Core</button>
+            <button class="day-btn" onclick="startWorkout(3)">Hybrid + Advanced Skills + Arms</button>
         </div>
 
         <div id="workoutContainer" class="workout-container">
@@ -554,23 +452,22 @@
             <div class="workout-header">
                 <div id="workoutTitle" class="workout-title"></div>
             </div>
-            <div id="circuitCounter" class="circuit-counter">
-                <div class="circuit-counter-text">Circuit</div>
-                <div class="circuit-dots">
-                    <div class="circuit-dot"></div>
-                    <div class="circuit-dot"></div>
-                    <div class="circuit-dot"></div>
-                </div>
+            <div class="exercise-list-container">
+                <div id="exerciseList" class="exercise-list"></div>
             </div>
             <div class="circle-container">
-                <svg class="progress-ring" viewBox="0 0 320 320">
-                    <circle class="progress-ring-bg" cx="160" cy="160" r="155"/>
-                    <circle id="progressRing" class="progress-ring-fill" cx="160" cy="160" r="155"/>
+                <div class="circuit-counter" id="circuitCounter"></div>
+                <svg class="progress-ring" width="300" height="300">
+                    <circle class="progress-ring-bg" cx="150" cy="150" r="148"/>
+                    <circle id="progressRing" class="progress-ring-fill" cx="150" cy="150" r="148"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
             </div>
-            <div class="exercise-list-container">
-                <div id="exerciseList" class="exercise-list"></div>
+            <div class="circuit-controls">
+                <div class="circuit-slider-container">
+                    <label class="circuit-slider-label">Circuit Repetitions: <span id="circuitValue">1</span></label>
+                    <input type="range" min="1" max="5" value="1" class="circuit-slider" id="circuitSlider">
+                </div>
             </div>
         </div>
 
@@ -584,7 +481,7 @@
     <script>
         const workouts = {
             1: {
-                title: "Day 1: Pull/Push Power + Upper Skills",
+                title: "Pull/Push Power + Upper Skills",
                 exercises: [
                     { type: "warmup", name: "Arm Circles + Wrist Prep", details: "45s" },
                     { type: "warmup", name: "Scapula Pushups", details: "10 reps" },
@@ -604,7 +501,7 @@
                 ]
             },
             2: {
-                title: "Day 2: Strength + Lower Skills + Core",
+                title: "Strength + Lower Skills + Core",
                 exercises: [
                     { type: "warmup", name: "Hip Circles + Leg Swings", details: "45s" },
                     { type: "warmup", name: "Glute Bridges", details: "12 reps" },
@@ -624,7 +521,7 @@
                 ]
             },
             3: {
-                title: "Day 3: Hybrid + Advanced Skills + Arms",
+                title: "Hybrid + Advanced Skills + Arms",
                 exercises: [
                     { type: "warmup", name: "Full Body Flow", details: "45s" },
                     { type: "warmup", name: "Hollow Rocks", details: "12 reps" },
@@ -647,254 +544,137 @@
 
         let currentWorkout = null;
         let currentExerciseIndex = 0;
+        let totalCircuits = 1;
         let currentCircuit = 1;
-        let warmupCompleted = false;
-        let mainExerciseIndices = [];
-        let exerciseCompletionState = {}; // Track which exercises have been completed in each circuit
+        let mainCircuitStart = 0;
+        let mainCircuitEnd = 0;
 
         function startWorkout(day) {
             currentWorkout = workouts[day];
             currentExerciseIndex = 0;
             currentCircuit = 1;
-            warmupCompleted = false;
-            exerciseCompletionState = {};
-            
-            // Find main exercise indices
-            mainExerciseIndices = [];
-            currentWorkout.exercises.forEach((exercise, index) => {
-                if (exercise.type === 'main') {
-                    mainExerciseIndices.push(index);
-                }
-            });
-            
-            // Initialize completion state for all main exercises across 3 circuits
-            for (let circuit = 1; circuit <= 3; circuit++) {
-                exerciseCompletionState[circuit] = {};
-                mainExerciseIndices.forEach(index => {
-                    exerciseCompletionState[circuit][index] = false;
-                });
-            }
-            
             document.getElementById('daySelector').style.display = 'none';
             document.getElementById('workoutContainer').style.display = 'flex';
             document.getElementById('completionScreen').style.display = 'none';
+            
+            // Find main circuit boundaries
+            const exercises = currentWorkout.exercises;
+            mainCircuitStart = exercises.findIndex(ex => ex.type === 'main');
+            for (let i = exercises.length - 1; i >= 0; i--) {
+                if (exercises[i].type === 'main') {
+                    mainCircuitEnd = i;
+                    break;
+                }
+            }
+            
             updateWorkoutDisplay();
             createExerciseList();
+            updateCircuitCounter();
         }
 
-        function previousExercise() {
-            if (currentExerciseIndex > 0) {
-                currentExerciseIndex--;
-                
-                // If moving back to warmup from main, update warmup status
-                if (currentExerciseIndex < mainExerciseIndices[0]) {
-                    warmupCompleted = false;
+        function updateCircuitCounter() {
+            const counter = document.getElementById('circuitCounter');
+            counter.innerHTML = '';
+            for (let i = 1; i <= totalCircuits; i++) {
+                const dot = document.createElement('div');
+                dot.className = `circuit-dot ${i <= currentCircuit - 1 ? 'completed' : ''}`;
+                counter.appendChild(dot);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('circuitSlider');
+            const value = document.getElementById('circuitValue');
+            
+            slider.addEventListener('input', function() {
+                totalCircuits = parseInt(this.value);
+                value.textContent = totalCircuits;
+                if (currentWorkout) {
+                    updateCircuitCounter();
                 }
-                
-                // If moving back from first main exercise of a circuit
-                const exercise = currentWorkout.exercises[currentExerciseIndex];
-                if (exercise.type === 'main' && currentCircuit > 1 && 
-                    mainExerciseIndices.indexOf(currentExerciseIndex) === mainExerciseIndices.length - 1) {
-                    currentCircuit--;
-                }
-                
+            });
+        });
+
+        function completeExercise(e) {
+            if (e) e.preventDefault();
+            const exercises = currentWorkout.exercises;
+            currentExerciseIndex++;
+
+            // If we're at the end of the main circuit
+            if (currentExerciseIndex > mainCircuitEnd && currentCircuit < totalCircuits) {
+                currentCircuit++;
+                currentExerciseIndex = mainCircuitStart; // Go back to start of main circuit
+                updateCircuitCounter();
                 updateWorkoutDisplay();
             }
+            // If we're at the end of all circuits or not in a circuit
+            else if (currentExerciseIndex >= exercises.length) {
+                document.getElementById('workoutContainer').style.display = 'none';
+                document.getElementById('completionScreen').style.display = 'flex';
+            } else {
+                updateWorkoutDisplay();
+            }
+        }
+
+        function goBack() {
+            document.getElementById('daySelector').style.display = 'flex';
+            document.getElementById('workoutContainer').style.display = 'none';
+            document.getElementById('completionScreen').style.display = 'none';
+            currentWorkout = null;
+            currentExerciseIndex = 0;
+            currentCircuit = 1;
+            document.getElementById('circuitSlider').value = 1;
+            document.getElementById('circuitValue').textContent = 1;
+            totalCircuits = 1;
         }
 
         function updateWorkoutDisplay() {
             const workout = currentWorkout;
             const exercise = workout.exercises[currentExerciseIndex];
             document.getElementById('workoutTitle').textContent = workout.title;
-            
-            // Update circuit counter visibility and state
-            const circuitCounter = document.getElementById('circuitCounter');
-            if (exercise.type === 'main') {
-                circuitCounter.style.display = 'block';
-                updateCircuitCounter();
-            } else {
-                circuitCounter.style.display = 'none';
-            }
-            
-            // Calculate progress
-            let totalExercises = workout.exercises.length;
-            let mainExercisesCount = mainExerciseIndices.length;
-            let warmupCount = mainExerciseIndices[0];
-            let finisherCount = workout.exercises.length - mainExerciseIndices[mainExerciseIndices.length - 1] - 1;
-            
-            // Progress calculation
-            let completedExercises = 0;
-            
-            // Count completed warmup exercises
-            if (currentExerciseIndex >= mainExerciseIndices[0]) {
-                // All warmup exercises are completed
-                completedExercises = warmupCount;
-            } else {
-                // Only count up to current exercise for warmup
-                completedExercises = currentExerciseIndex;
-            }
-            
-            // Count completed main exercises across all circuits
-            for (let circuit = 1; circuit <= 3; circuit++) {
-                mainExerciseIndices.forEach(index => {
-                    if (exerciseCompletionState[circuit]?.[index]) {
-                        completedExercises++;
-                    }
-                });
-            }
-            
-            // If we're in finisher exercises
-            if (exercise.type === 'finisher') {
-                // Count all main exercises from previous circuits as completed
-                const unaccountedMainExercises = mainExerciseIndices.length * 3 - 
-                    Object.values(exerciseCompletionState).reduce((acc, circuit) => 
-                        acc + Object.values(circuit).filter(Boolean).length, 0);
-                completedExercises += unaccountedMainExercises;
-                
-                // Add completed finisher exercises
-                const firstFinisherIndex = mainExerciseIndices[mainExerciseIndices.length - 1] + 1;
-                completedExercises += currentExerciseIndex - firstFinisherIndex;
-            }
-            
-            // Adjust total exercises to account for 3 circuits of main exercises
-            totalExercises = warmupCount + (mainExercisesCount * 3) + finisherCount;
-            
-            // Calculate and update progress ring
-            const progress = (completedExercises / totalExercises) * 100;
+            const progress = (currentExerciseIndex / workout.exercises.length) * 100;
+            const circumference = 2 * Math.PI * 148;
             const progressRing = document.getElementById('progressRing');
-            const radius = 155;
-            const circumference = 2 * Math.PI * radius;
-            progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
-            progressRing.style.strokeDashoffset = circumference - (progress / 100) * circumference;
-            
-            // Update exercise display
+            progressRing.style.strokeDasharray = circumference;
+            progressRing.style.strokeDashoffset = (1 - progress / 100) * circumference;
             const exerciseCircle = document.getElementById('exerciseCircle');
             exerciseCircle.innerHTML = `
-                <div class="exercise-type">${exercise.type === 'warmup' ? 'WARMUP' : exercise.type === 'finisher' ? 'FINISHER' : ''}</div>
+                <div class="exercise-type">${exercise.type}</div>
                 <div class="exercise-name">${exercise.name}</div>
                 <div class="exercise-details">${exercise.details}</div>
-                <button class="complete-btn" onclick="completeExercise()">Complete</button>
-                <button class="prev-btn-small" onclick="previousExercise()" ${currentExerciseIndex === 0 ? 'disabled' : ''}>Previous</button>
+                <button class="complete-btn" onclick="completeExercise(event)">
+                    ${currentExerciseIndex === workout.exercises.length - 1 ? 'Finish' : 'Complete'}
+                </button>
             `;
-            
-            // Remove the old navigation buttons section
-            const navButtons = document.querySelector('.navigation-buttons');
-            if (navButtons) {
-                navButtons.remove();
-            }
-            
-            // Update exercise list highlighting
-            updateExerciseListHighlight();
-        }
-
-        function completeExercise() {
-            const exercise = currentWorkout.exercises[currentExerciseIndex];
-            
-            // Mark exercise as completed in the current circuit if it's a main exercise
-            if (exercise.type === 'main') {
-                exerciseCompletionState[currentCircuit][currentExerciseIndex] = true;
-            }
-            
-            // Determine next exercise
-            if (exercise.type === 'warmup' && currentExerciseIndex === mainExerciseIndices[0] - 1) {
-                // Moving from warmup to main exercises
-                warmupCompleted = true;
-                currentExerciseIndex = mainExerciseIndices[0];
-            } else if (exercise.type === 'main') {
-                const currentMainIndex = mainExerciseIndices.indexOf(currentExerciseIndex);
-                
-                if (currentMainIndex === mainExerciseIndices.length - 1) {
-                    // End of main exercises for current circuit
-                    if (currentCircuit < 3) {
-                        // Move to next circuit
-                        currentCircuit++;
-                        currentExerciseIndex = mainExerciseIndices[0];
-                    } else {
-                        // All circuits completed, move to finishers
-                        currentExerciseIndex = mainExerciseIndices[mainExerciseIndices.length - 1] + 1;
-                    }
-                } else {
-                    // Move to next main exercise
-                    currentExerciseIndex = mainExerciseIndices[currentMainIndex + 1];
-                }
-            } else if (exercise.type === 'finisher') {
-                if (currentExerciseIndex === currentWorkout.exercises.length - 1) {
-                    // Workout complete
-                    showCompletionScreen();
-                    return;
-                } else {
-                    // Move to next finisher
-                    currentExerciseIndex++;
-                }
-            } else {
-                // Standard progression
-                currentExerciseIndex++;
-            }
-            
-            updateWorkoutDisplay();
-        }
-
-        function updateCircuitCounter() {
-            const dots = document.querySelectorAll('.circuit-dot');
-            dots.forEach((dot, index) => {
-                const circuitNum = index + 1;
-                dot.classList.toggle('active', circuitNum === currentCircuit);
-                dot.classList.toggle('completed', circuitNum < currentCircuit);
-            });
+            updateExerciseList();
         }
 
         function createExerciseList() {
             const exerciseList = document.getElementById('exerciseList');
-            exerciseList.innerHTML = '';
-            
-            currentWorkout.exercises.forEach((exercise, index) => {
-                const exerciseItem = document.createElement('div');
-                exerciseItem.className = 'exercise-item';
-                exerciseItem.innerHTML = `
+            const exercises = currentWorkout.exercises;
+            exerciseList.innerHTML = exercises.map((exercise, index) => `
+                <div class="exercise-item ${index === currentExerciseIndex ? 'current' : ''} ${index < currentExerciseIndex ? 'completed' : ''}">
                     <div class="exercise-item-name">${exercise.name}</div>
                     <div class="exercise-item-details">${exercise.details}</div>
-                `;
-                exerciseList.appendChild(exerciseItem);
-            });
+                </div>
+            `).join('');
         }
 
-        function updateExerciseListHighlight() {
-            const exerciseList = document.getElementById('exerciseList');
-            const exerciseItems = document.querySelectorAll('.exercise-item');
-            
-            // Update class states first
-            exerciseItems.forEach((item, index) => {
-                item.classList.remove('current', 'completed');
-                
+        function updateExerciseList() {
+            const items = document.querySelectorAll('.exercise-item');
+            items.forEach((item, index) => {
+                item.className = 'exercise-item';
                 if (index === currentExerciseIndex) {
                     item.classList.add('current');
-                } else if (index < currentExerciseIndex || 
-                         (exerciseCompletionState[currentCircuit]?.[index] && 
-                          currentWorkout.exercises[index].type === 'main')) {
+                    const list = document.querySelector('.exercise-list');
+                    const itemLeft = item.offsetLeft;
+                    const listWidth = list.clientWidth;
+                    const itemWidth = item.clientWidth;
+                    list.scrollLeft = itemLeft - (listWidth - itemWidth) / 2;
+                } else if (index < currentExerciseIndex) {
                     item.classList.add('completed');
                 }
             });
-
-            // Center the current exercise in the scrollable list
-            const currentExerciseItem = document.querySelector('.exercise-item.current');
-            if (currentExerciseItem) {
-                currentExerciseItem.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'center'
-                });
-            }
-        }
-
-        function showCompletionScreen() {
-            document.getElementById('workoutContainer').style.display = 'none';
-            document.getElementById('completionScreen').style.display = 'flex';
-        }
-
-        function goBack() {
-            document.getElementById('workoutContainer').style.display = 'none';
-            document.getElementById('completionScreen').style.display = 'none';
-            document.getElementById('daySelector').style.display = 'flex';
         }
     </script>
 </body>
