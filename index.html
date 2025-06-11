@@ -24,24 +24,7 @@
             flex-direction: column;
             backdrop-filter: blur(10px);
             border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.08);
             overflow: hidden;
-        }
-        .header { 
-            text-align: center; 
-            padding: 32px 0 24px; 
-            background: rgba(255,255,255,0.02);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            margin-bottom: 0;
-            flex-shrink: 0;
-        }
-        .header h1 { 
-            font-size: 16px; 
-            font-weight: 500; 
-            letter-spacing: 4px; 
-            color: #ffffff;
-            text-transform: uppercase;
-            opacity: 0.9;
         }
         .day-selector { 
             flex: 1; 
@@ -249,25 +232,23 @@
             font-weight: 400;
         }
         .exercise-item.current .exercise-item-details { opacity: 0.8; }
-        .back-btn { 
-            background: rgba(255,255,255,0.04);
-            color: #e8e8e8;
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 8px 16px;
-            font-size: 10px;
+        .back-btn {
+            color: rgba(255,255,255,0.6);
+            padding: 8px 0;
+            font-size: 11px;
             cursor: pointer;
             margin-bottom: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             letter-spacing: 1px;
             text-transform: uppercase;
             width: fit-content;
             flex-shrink: 0;
-            border-radius: 8px;
             font-weight: 500;
+            border: none;
+            background: none;
+            transition: color 0.3s ease;
         }
         .back-btn:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
         }
         
         .circuit-controls { 
@@ -281,7 +262,6 @@
             background: rgba(255,255,255,0.02);
             border-radius: 16px;
             padding: 16px;
-            border: 1px solid rgba(255,255,255,0.06);
         }
         .circuit-slider-label { 
             font-size: 11px; 
@@ -296,7 +276,7 @@
             -webkit-appearance: none; 
             appearance: none; 
             height: 3px; 
-            background: rgba(255,255,255,0.1); 
+            background: rgba(255, 255, 255, 0.5); 
             outline: none; 
             cursor: pointer;
             border-radius: 2px;
@@ -306,7 +286,7 @@
             width: 16px; 
             height: 16px; 
             border-radius: 50%; 
-            background: #ffffff; 
+            background: #ffffff !important; 
             cursor: pointer; 
             border: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -412,8 +392,6 @@
             .exercise-item { min-width: 90px; }
         }
         @media (max-height: 600px) and (orientation: landscape) {
-            .header { padding: 16px 0; margin-bottom: 8px; }
-            .header h1 { font-size: 14px; }
             .circle-container { width: 200px; height: 200px; margin-bottom: 16px; }
             .exercise-circle { width: 160px; height: 160px; padding: 20px; }
             .exercise-name { font-size: 14px; margin-bottom: 8px; }
@@ -437,10 +415,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>CALISTHENICS</h1>
-        </div>
-
         <div id="daySelector" class="day-selector">
             <button class="day-btn" onclick="startWorkout(1)">Pull/Push Power + Upper Skills</button>
             <button class="day-btn" onclick="startWorkout(2)">Strength + Lower Skills + Core</button>
