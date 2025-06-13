@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwW6bE86skWyOT4VcW0BeKtAWe9iMh-CBrogL4FHq4pQ1o6SNpI1rdSRYq3E6FZQg9T/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwwjgmR2uN86Kn7_FcIe4uzxsY1Zj7_i-y_8Ta9NNewDoXSU2eH6wcSYJ7mZgh5s5Eo/exec';
 
 let workouts = {}
 const WORKOUT_TITLES = {
