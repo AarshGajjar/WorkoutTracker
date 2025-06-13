@@ -62,23 +62,9 @@ let currentCircuit = 1;
 let mainCircuitStart = 0;
 let mainCircuitEnd = 0;
 let selectedWorkoutDayKey = null;
-let currentEditingDayKey = null;
 
 function startWorkout(dayKey) {
     selectedWorkoutDayKey = dayKey; // Store the selected day key
-    
-    // Enable all edit-related buttons
-    [
-        'editDayBtn',
-        'addExerciseBtn',
-        'saveDayWorkoutBtn',
-        'cancelEditDayBtn'
-    ].forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            btn.disabled = false;
-        }
-    });
 
     if (!workouts[dayKey]) {
         console.error(`Workout for day ${dayKey} not loaded or does not exist.`);
@@ -95,16 +81,7 @@ function startWorkout(dayKey) {
     document.getElementById('daySelector').style.display = 'none';
     document.getElementById('editDayView').style.display = 'none';
     document.getElementById('completionScreen').style.display = 'none';
-    document.getElementById('workoutContainer').style.display = 'flex';    const editButton = document.getElementById('editDayBtn');
-    editButton.style.display = 'block';
-    
-    // Re-attach event listener when button becomes visible
-    editButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('Edit button clicked');
-        editDay();
-    });
-    
+    document.getElementById('workoutContainer').style.display = 'flex';
     // Find main circuit boundaries
     const exercises = currentWorkout.exercises;
     mainCircuitStart = exercises.findIndex(ex => ex.type === 'main');
@@ -140,166 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentWorkout) {
             updateCircuitCounter();
         }
-    });    // New Edit Day View button listeners
-    const editDayBtn = document.getElementById('editDayBtn');
-    if (editDayBtn) {
-        editDayBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Edit button clicked'); // Debug log
-            editDay();
-        });
-    } else {
-        console.error('Edit Day button not found in DOM');
-    }
-    
-    document.getElementById('addExerciseBtn').addEventListener('click', addExerciseToEditForm);
-    document.getElementById('saveDayWorkoutBtn').addEventListener('click', saveDayWorkout);
-    document.getElementById('cancelEditDayBtn').addEventListener('click', cancelEditDay);
-
+    });
     loadWorkouts(); // Load workouts when the DOM is ready
 });
-
-function generateExerciseEditGroupHTML(exercise, index) {
-    const exerciseType = exercise ? exercise.type : '';
-    const exerciseName = exercise ? exercise.name : '';
-    const exerciseDetails = exercise ? exercise.details : '';
-    // Consider adding a unique ID for each group if needed for more complex manipulations later
-    return `
-        <div class="exercise-edit-group" data-index="${index}">
-            <button class="remove-exercise-btn" onclick="removeExerciseFromEditForm(this)">Remove</button>
-            <label>Type:</label><input type="text" class="edit-type" value="${exerciseType}" placeholder="e.g., warmup, main, finisher">
-            <label>Name:</label><input type="text" class="edit-name" value="${exerciseName}" placeholder="Exercise Name">
-            <label>Details:</label><input type="text" class="edit-details" value="${exerciseDetails}" placeholder="e.g., 10 reps, 30s hold">
-        </div>
-    `;
-}
-
-function editDay() {
-    console.log('editDay function called');
-    console.log('selectedWorkoutDayKey:', selectedWorkoutDayKey);
-    console.log('workouts:', workouts);
-    
-    if (!selectedWorkoutDayKey || !workouts[selectedWorkoutDayKey]) {
-        console.error("No workout selected or workout data missing for key:", selectedWorkoutDayKey);
-        alert("Error: Cannot edit day. No workout data loaded.");
-        return;
-    }
-    currentEditingDayKey = selectedWorkoutDayKey;
-    const workoutToEdit = workouts[currentEditingDayKey];
-
-    document.getElementById('workoutContainer').style.display = 'none';
-    document.getElementById('editDayView').style.display = 'flex'; // Show the edit day view
-
-    document.getElementById('editDayTitle').textContent = `Edit Workout for ${workoutToEdit.title}`;
-
-    const container = document.getElementById('editDayExerciseListContainer');
-    container.innerHTML = ''; // Clear previous exercises
-    workoutToEdit.exercises.forEach((exercise, index) => {
-        container.innerHTML += generateExerciseEditGroupHTML(exercise, index);
-    });
-}
-
-function addExerciseToEditForm() {
-    const container = document.getElementById('editDayExerciseListContainer');
-    const nextIndex = container.children.length; // Determine index for new exercise
-    container.innerHTML += generateExerciseEditGroupHTML(null, nextIndex);
-}
-
-function removeExerciseFromEditForm(buttonElement) {
-    buttonElement.parentElement.remove();
-    // Note: Re-indexing data-index attributes is not strictly necessary if we read elements in order on save.
-}
-
-function cancelEditDay() {
-    document.getElementById('editDayView').style.display = 'none';
-    document.getElementById('workoutContainer').style.display = 'flex'; // Show the main workout view
-    currentEditingDayKey = null;
-}
-
-async function saveDayWorkout() {
-    if (!currentEditingDayKey) {
-        console.error("No day is currently being edited.");
-        alert("Error: No workout day selected for saving.");
-        return;
-    }
-
-    const saveButton = document.getElementById('saveDayWorkoutBtn');
-    saveButton.disabled = true;
-    saveButton.textContent = 'Saving...';
-
-    const updatedExercises = [];
-    const exerciseGroups = document.querySelectorAll('#editDayExerciseListContainer .exercise-edit-group');
-    exerciseGroups.forEach(group => {
-        const type = group.querySelector('.edit-type').value.trim();
-        const name = group.querySelector('.edit-name').value.trim();
-        const details = group.querySelector('.edit-details').value.trim();
-        if (name) {
-            updatedExercises.push({ type, name, details });
-        }
-    });
-
-    const payload = {
-        action: 'updateDayWorkout',
-        day: currentEditingDayKey,
-        exercises: updatedExercises
-    };
-
-    console.log("Saving day workout payload:", payload);    try {
-        const response = await fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            let errorMsg = `Error saving day workout. Status: ${response.status}`;
-            try { const errorData = await response.json(); errorMsg += ` - ${errorData.message || 'Server error'}`; } catch(e){}
-            throw new Error(errorMsg);
-        }
-        const result = await response.json();
-
-        if (result.success) {
-            // Update local data
-            workouts[currentEditingDayKey].exercises = updatedExercises;
-            // If the edited day is the currently active workout, update currentWorkout directly
-            if (selectedWorkoutDayKey === currentEditingDayKey) {
-                currentWorkout.exercises = [...updatedExercises]; // Ensure currentWorkout also reflects changes
-            }
-
-            alert('Workout for the day saved successfully!');
-            document.getElementById('editDayView').style.display = 'none';
-            // Important: Re-initialize the workout view for the *potentially* changed current day
-            // This ensures that if we were editing the day we were viewing, it refreshes.
-            // startWorkout will also handle showing workoutContainer and hiding others.
-            startWorkout(currentEditingDayKey);
-
-            // currentEditingDayKey = null; // Reset after successful save and view switch
-        } else {
-            throw new Error(result.message || "Save was not successful on the server.");
-        }
-    } catch (error) {
-        console.error("Failed to save day workout:", error);
-        alert(`Failed to save changes: ${error.message}\n\nPlease check:
-- Your internet connection.
-- The APPS_SCRIPT_URL in index.html (is it correct and re-deployed if script changed?).
-- The Google Sheet "Workout Plan" (sheet "Exercises", columns: day,type,name,details).
-- Apps Script deployment: "Execute as: Me", "Who has access: Anyone". (Crucial for CORS and doOptions).
-- Browser developer console (Network/Console tabs) for detailed errors.
-- Apps Script project's execution logs for server-side errors.
-
-Your changes have not been saved. Please try again.`);
-    } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = 'Save All Changes';
-    }
-}
-
-
 
 function completeExercise(e) {
     if (e) e.preventDefault();
@@ -323,21 +143,7 @@ function completeExercise(e) {
 }
 
 function goBack() {
-    // Reset all edit-related buttons
-    [
-        'editDayBtn',
-        'addExerciseBtn',
-        'saveDayWorkoutBtn',
-        'cancelEditDayBtn'
-    ].forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            btn.disabled = false;
-        }
-    });
-    
     document.getElementById('editDayView').style.display = 'none';
-    document.getElementById('editDayBtn').style.display = 'none';
 
     if (Object.keys(workouts).length > 0) {
         document.getElementById('daySelector').style.display = 'flex';

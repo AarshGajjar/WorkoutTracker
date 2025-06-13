@@ -19,16 +19,15 @@
             <button class="back-btn" onclick="goBack()">← Back</button>
             <div class="workout-header">
                 <div id="workoutTitle" class="workout-title"></div>
-                <button id="editDayBtn" class="day-btn" style="padding: 10px 15px; font-size: 12px; margin-top:10px; margin-bottom: 0px; display: none;">Edit Day's Workout</button>
             </div>
             <div class="exercise-list-container">
                 <div id="exerciseList" class="exercise-list"></div>
             </div>
             <div class="circle-container">
                 <div class="circuit-counter" id="circuitCounter"></div>
-                <svg class="progress-ring" width="300" height="300">
-                    <circle class="progress-ring-bg" cx="150" cy="150" r="148"/>
-                    <circle id="progressRing" class="progress-ring-fill" cx="150" cy="150" r="148"/>
+                <svg class="progress-ring" width="360" height="360">
+                    <circle class="progress-ring-bg" cx="180" cy="180" r="178"/>
+                    <circle id="progressRing" class="progress-ring-fill" cx="180" cy="180" r="178"/>
                 </svg>
                 <div id="exerciseCircle" class="exercise-circle"></div>
             </div>
@@ -44,18 +43,6 @@
             <div class="completion-title">COMPLETE</div>
             <div class="completion-message">Workout finished.<br>Well done.</div>
             <button class="restart-btn" onclick="goBack()">Choose Another Day</button>
-        </div>
-
-        <div id="editDayView" style="display: none; padding: 20px; flex-direction: column; min-height: calc(100vh - 40px);">
-            <h2 id="editDayTitle" style="text-align: center; margin-bottom: 20px; font-size: 18px; font-weight: 500;">Edit Workout</h2>
-            <div id="editDayExerciseListContainer" style="flex-grow: 1; overflow-y: auto; margin-bottom: 20px; padding-right: 5px;">
-
-            </div>
-            <button id="addExerciseBtn" class="day-btn" style="background-color: #3a3a3c; margin-bottom: 10px; padding: 12px 20px; font-size: 13px;">Add New Exercise</button>
-            <div style="display: flex; gap: 10px;">
-                <button id="saveDayWorkoutBtn" class="day-btn" style="flex-grow: 1; background-color: #28a745; padding: 12px 20px; font-size: 13px;">Save All Changes</button>
-                <button id="cancelEditDayBtn" class="day-btn" style="flex-grow: 1; background-color: #dc3545; padding: 12px 20px; font-size: 13px;">Cancel</button>
-            </div>
         </div>
 
     </div>
