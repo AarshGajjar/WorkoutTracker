@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwwjgmR2uN86Kn7_FcIe4uzxsY1Zj7_i-y_8Ta9NNewDoXSU2eH6wcSYJ7mZgh5s5Eo/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxw7VLsNMZX58JC6KKgwasAPfnCcYDx-jBt_wUu2y_Yrk1tyTyHYulpr25MzqhUZYz/exec';
 
 let workouts = {}
 const WORKOUT_TITLES = {
@@ -14,16 +14,8 @@ async function loadWorkouts() {
     const dayButtons = document.querySelectorAll('.day-btn');
     dayButtons.forEach(btn => btn.disabled = true);
 
-    try {
-        const response = await fetch(APPS_SCRIPT_URL, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        });
-        
+     try {
+        const response = await fetch(APPS_SCRIPT_URL);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -40,7 +32,7 @@ async function loadWorkouts() {
             newWorkouts[ex.day].exercises.push({type: ex.type, name: ex.name, details: ex.details});
         });
 
-        workouts = newWorkouts;
+                workouts = newWorkouts
         daySelector.innerHTML = originalButtonsHTML;
 
 
