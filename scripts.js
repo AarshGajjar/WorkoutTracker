@@ -72,14 +72,12 @@ function startWorkout(dayKey) {
         daySelector.innerHTML = `<div style="text-align: center; padding: 20px; color: #ff6b6b;">Workout Day ${dayKey} is not available. Please try again later.</div>`;
         document.getElementById('workoutContainer').style.display = 'none';
         document.getElementById('completionScreen').style.display = 'none';
-        document.getElementById('editDayView').style.display = 'none';
         return;
     }
     currentWorkout = workouts[dayKey]; // currentWorkout is now correctly assigned
     currentExerciseIndex = 0;
     currentCircuit = 1;
     document.getElementById('daySelector').style.display = 'none';
-    document.getElementById('editDayView').style.display = 'none';
     document.getElementById('completionScreen').style.display = 'none';
     document.getElementById('workoutContainer').style.display = 'flex';
     // Find main circuit boundaries
@@ -143,7 +141,6 @@ function completeExercise(e) {
 }
 
 function goBack() {
-    document.getElementById('editDayView').style.display = 'none';
 
     if (Object.keys(workouts).length > 0) {
         document.getElementById('daySelector').style.display = 'flex';
@@ -164,11 +161,20 @@ function updateWorkoutDisplay() {
     const workout = currentWorkout;
     const exercise = workout.exercises[currentExerciseIndex];
     document.getElementById('workoutTitle').textContent = workout.title;
-    const progress = (currentExerciseIndex / workout.exercises.length) * 100;
-    const circumference = 2 * Math.PI * 148;
+      // Calculate progress ring
+    const circumference = 2 * Math.PI * 178; // Match the circle radius in the SVG (r=178)
     const progressRing = document.getElementById('progressRing');
-    progressRing.style.strokeDasharray = circumference;
-    progressRing.style.strokeDashoffset = (1 - progress / 100) * circumference;
+    progressRing.style.strokeDasharray = `${circumference}`;
+    
+    // Only show progress after completing at least one exercise
+    if (currentExerciseIndex === 0) {
+        progressRing.style.strokeDashoffset = `${circumference}`; // Start at 12 o'clock
+    } else {
+        const progress = currentExerciseIndex / workout.exercises.length;
+        const offset = circumference - (progress * circumference);
+        progressRing.style.strokeDashoffset = `${offset}`;
+    }
+    
     const exerciseCircle = document.getElementById('exerciseCircle');
     exerciseCircle.innerHTML = `
         <div class="exercise-type">${exercise.type}</div>

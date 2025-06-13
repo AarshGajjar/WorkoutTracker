@@ -97,9 +97,14 @@ body {
 }
 .progress-ring { 
     position: absolute; 
-    top: 0; 
-    left: 0; 
-    filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
+    left: 0;
+    top: 0;
+    transform: rotate(0deg);
+    width: 360px;
+    height: 360px;
+}
+.progress-ring circle {
+    transform-origin: center;
 }
 .progress-ring-bg { 
     fill: none; 
@@ -111,10 +116,11 @@ body {
     stroke: #ffffff; 
     stroke-width: 2; 
     stroke-linecap: round; 
-    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+    transition: stroke-dashoffset 0.3s ease; 
     transform-origin: center; 
     transform: rotate(-90deg);
     filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+    stroke-dashoffset: 1118.58; /* Initial position at top (2 * PI * 178) */
 }
 .exercise-circle { 
     width: 310px;
