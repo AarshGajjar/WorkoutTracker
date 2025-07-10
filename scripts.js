@@ -1,20 +1,29 @@
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxw7VLsNMZX58JC6KKgwasAPfnCcYDx-jBt_wUu2y_Yrk1tyTyHYulpr25MzqhUZYz/exec';
 
-let workouts = {}
-const WORKOUT_TITLES = {
-    1: "Pull/Push Power + Upper Skills",
-    2: "Strength + Lower Skills + Core",
-    3: "Hybrid + Advanced Skills + Arms"
+let workouts = {};
+let currentWorkout = null;
+let currentExerciseIndex = 0;
+let totalCircuits = 1;
+let currentCircuit = 1;
+let mainCircuitStart = 0;
+let mainCircuitEnd = 0;
+let selectedWeek = 'Week 1-2'; // Default to the first phase
+
+const dayNameToKey = {
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6
 };
 
 async function loadWorkouts() {
     const daySelector = document.getElementById('daySelector');
-    const originalButtonsHTML = daySelector.innerHTML; // Save original buttons
+    const originalButtonsHTML = daySelector.innerHTML;
     daySelector.innerHTML = '<div style="text-align: center; padding: 20px; font-size: 16px;">Loading workouts...</div>';
-    const dayButtons = document.querySelectorAll('.day-btn');
-    dayButtons.forEach(btn => btn.disabled = true);
 
-     try {
+    try {
         const response = await fetch(APPS_SCRIPT_URL);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -23,132 +32,106 @@ async function loadWorkouts() {
 
         const newWorkouts = {};
         rawExercises.forEach(ex => {
-            if (!newWorkouts[ex.day]) {
-                newWorkouts[ex.day] = {
-                    title: WORKOUT_TITLES[ex.day] || `Workout Day ${ex.day}`, // Assign title
+            const week = ex.week;
+            // The Google Sheet might return the day name or number. Handle both.
+            const dayKey = dayNameToKey[ex.day] || ex.day;
+            if (!week || !dayKey) return;
+
+            if (!newWorkouts[week]) {
+                newWorkouts[week] = {};
+            }
+            if (!newWorkouts[week][dayKey]) {
+                newWorkouts[week][dayKey] = {
+                    title: ex['day name'],
                     exercises: []
                 };
             }
-            newWorkouts[ex.day].exercises.push({type: ex.type, name: ex.name, details: ex.details});
+            newWorkouts[week][dayKey].exercises.push({
+                type: ex['exercise type'],
+                name: ex['exercise name'],
+                details: ex['reps/time']
+            });
         });
 
-                workouts = newWorkouts
-        daySelector.innerHTML = originalButtonsHTML;
-
+        workouts = newWorkouts;
+        daySelector.innerHTML = originalButtonsHTML; // Restore buttons
 
     } catch (error) {
         console.error("Failed to load workouts:", error);
         daySelector.innerHTML = `<div style="text-align: center; padding: 20px; color: #ff6b6b;">
-            <strong>Failed to load workouts.</strong><br><br>
+            <strong>Failed to load workouts from Google Sheet.</strong><br><br>
             Please check the following:
             <ul style="text-align: left; display: inline-block; margin-top: 10px; font-size: 13px;">
-                <li>Is the APPS_SCRIPT_URL in index.html correct and updated after any Apps Script re-deployment?</li>
-                <li>Is the Google Sheet named "Workout Plan" with a sheet/tab named "Exercises" (columns: day, type, name, details) correctly set up and shared if necessary (though script runs as owner)?</li>
-                <li>Was the Apps Script deployed (or re-deployed) as a Web App with "Execute as: Me" and "Who has access: Anyone"? (This is vital for CORS and doOptions to work).</li>
-                <li>Check your browser's developer console (Network tab and Console tab) for more specific error messages.</li>
-                <li>Check the Apps Script project's execution logs for any server-side errors.</li>
+                <li>Ensure your Google Sheet has the columns: <code>Week</code>, <code>Day</code>, <code>Day Name</code>, <code>Exercise Type</code>, <code>Exercise Name</code>, <code>Reps/Time</code>.</li>
+                <li>Verify the Apps Script is deployed correctly and can access the sheet.</li>
+                <li>Check the browser's developer console for more specific errors.</li>
             </ul>
-            <br>Try refreshing the page. If issues persist, verify the Apps Script deployment.
         </div>`;
     }
 }
 
-
-
-let currentWorkout = null;
-let currentExerciseIndex = 0;
-let totalCircuits = 1;
-let currentCircuit = 1;
-let mainCircuitStart = 0;
-let mainCircuitEnd = 0;
-let selectedWorkoutDayKey = null;
-
 function startWorkout(dayKey) {
-    selectedWorkoutDayKey = dayKey; // Store the selected day key
-
-    if (!workouts[dayKey]) {
-        console.error(`Workout for day ${dayKey} not loaded or does not exist.`);
+    if (!workouts[selectedWeek] || !workouts[selectedWeek][dayKey]) {
+        console.error(`Workout for phase ${selectedWeek}, day ${dayKey} not loaded.`);
         const daySelector = document.getElementById('daySelector');
-        daySelector.innerHTML = `<div style="text-align: center; padding: 20px; color: #ff6b6b;">Workout Day ${dayKey} is not available. Please try again later.</div>`;
-        document.getElementById('workoutContainer').style.display = 'none';
-        document.getElementById('completionScreen').style.display = 'none';
+        daySelector.innerHTML = `<div style="text-align: center; padding: 20px; color: #ff6b6b;">Workout for the selected phase is not available.</div>`;
         return;
     }
-    currentWorkout = workouts[dayKey]; // currentWorkout is now correctly assigned
+
+    currentWorkout = workouts[selectedWeek][dayKey];
     currentExerciseIndex = 0;
     currentCircuit = 1;
+
+    document.querySelector('.week-selector-container').style.display = 'none';
     document.getElementById('daySelector').style.display = 'none';
     document.getElementById('completionScreen').style.display = 'none';
     document.getElementById('workoutContainer').style.display = 'flex';
-    // Find main circuit boundaries
+
     const exercises = currentWorkout.exercises;
-    mainCircuitStart = exercises.findIndex(ex => ex.type === 'main');
+    mainCircuitStart = exercises.findIndex(ex => ex.type.toLowerCase() === 'main');
+    mainCircuitEnd = -1;
     for (let i = exercises.length - 1; i >= 0; i--) {
-        if (exercises[i].type === 'main') {
+        if (exercises[i].type.toLowerCase() === 'main') {
             mainCircuitEnd = i;
             break;
         }
     }
-    
+     if (mainCircuitStart === -1) { // If no main circuit, treat all as one sequence
+        mainCircuitStart = 0;
+        mainCircuitEnd = exercises.length -1;
+    }
+
+
     updateWorkoutDisplay();
     createExerciseList();
     updateCircuitCounter();
 }
-
-function updateCircuitCounter() {
-    const counter = document.getElementById('circuitCounter');
-    counter.innerHTML = '';
-    for (let i = 1; i <= totalCircuits; i++) {
-        const dot = document.createElement('div');
-        dot.className = `circuit-dot ${i <= currentCircuit - 1 ? 'completed' : ''}`;
-        counter.appendChild(dot);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('circuitSlider');
-    const value = document.getElementById('circuitValue');
-    
-    slider.addEventListener('input', function() {
-        totalCircuits = parseInt(this.value);
-        value.textContent = totalCircuits;
-        if (currentWorkout) {
-            updateCircuitCounter();
-        }
-    });
-    loadWorkouts(); // Load workouts when the DOM is ready
-});
 
 function completeExercise(e) {
     if (e) e.preventDefault();
     const exercises = currentWorkout.exercises;
     currentExerciseIndex++;
 
-    // If we're at the end of the main circuit
-    if (currentExerciseIndex > mainCircuitEnd && currentCircuit < totalCircuits) {
+    // If we finished the main circuit and more rounds are left
+    if (currentExerciseIndex > mainCircuitEnd && currentCircuit < totalCircuits && mainCircuitStart !== -1) {
         currentCircuit++;
-        currentExerciseIndex = mainCircuitStart; // Go back to start of main circuit
-        updateCircuitCounter();
-        updateWorkoutDisplay();
-    }
-    // If we're at the end of all circuits or not in a circuit
-    else if (currentExerciseIndex >= exercises.length) {
+        currentExerciseIndex = mainCircuitStart; // Go back to the start of the main circuit
+    } else if (currentExerciseIndex >= exercises.length) {
+        // Workout is fully complete
         document.getElementById('workoutContainer').style.display = 'none';
         document.getElementById('completionScreen').style.display = 'flex';
-    } else {
-        updateWorkoutDisplay();
     }
+    
+    updateCircuitCounter();
+    updateWorkoutDisplay();
 }
 
 function goBack() {
-
-    if (Object.keys(workouts).length > 0) {
-        document.getElementById('daySelector').style.display = 'flex';
-    } else {
-        // Error message is in daySelector if load failed
-    }
+    document.querySelector('.week-selector-container').style.display = 'block';
+    document.getElementById('daySelector').style.display = 'flex';
     document.getElementById('workoutContainer').style.display = 'none';
     document.getElementById('completionScreen').style.display = 'none';
+
     currentWorkout = null;
     currentExerciseIndex = 0;
     currentCircuit = 1;
@@ -158,30 +141,30 @@ function goBack() {
 }
 
 function updateWorkoutDisplay() {
+    if (!currentWorkout || !currentWorkout.exercises[currentExerciseIndex]) {
+        console.error("Workout or exercise is not available.");
+        goBack();
+        return;
+    }
     const workout = currentWorkout;
     const exercise = workout.exercises[currentExerciseIndex];
     document.getElementById('workoutTitle').textContent = workout.title;
-      // Calculate progress ring
-    const circumference = 2 * Math.PI * 178; // Match the circle radius in the SVG (r=178)
+
+    const circumference = 2 * Math.PI * 178;
     const progressRing = document.getElementById('progressRing');
     progressRing.style.strokeDasharray = `${circumference}`;
     
-    // Only show progress after completing at least one exercise
-    if (currentExerciseIndex === 0) {
-        progressRing.style.strokeDashoffset = `${circumference}`; // Start at 12 o'clock
-    } else {
-        const progress = currentExerciseIndex / workout.exercises.length;
-        const offset = circumference - (progress * circumference);
-        progressRing.style.strokeDashoffset = `${offset}`;
-    }
-    
+    const progress = currentExerciseIndex / workout.exercises.length;
+    const offset = circumference - (progress * circumference);
+    progressRing.style.strokeDashoffset = `${offset}`;
+
     const exerciseCircle = document.getElementById('exerciseCircle');
     exerciseCircle.innerHTML = `
         <div class="exercise-type">${exercise.type}</div>
         <div class="exercise-name">${exercise.name}</div>
         <div class="exercise-details">${exercise.details}</div>
         <button class="complete-btn" onclick="completeExercise(event)">
-            ${currentExerciseIndex === workout.exercises.length - 1 ? 'Finish' : 'Complete'}
+            ${currentExerciseIndex === workout.exercises.length - 1 && currentCircuit === totalCircuits ? 'Finish' : 'Complete'}
         </button>
     `;
     updateExerciseList();
@@ -194,12 +177,9 @@ function createExerciseList() {
         <div class="exercise-item ${index === currentExerciseIndex ? 'current' : ''} ${index < currentExerciseIndex ? 'completed' : ''}">
             <div class="exercise-item-name">${exercise.name}</div>
             <div class="exercise-item-details">${exercise.details}</div>
-
         </div>
     `).join('');
 }
-
-
 
 function updateExerciseList() {
     const items = document.querySelectorAll('.exercise-item');
@@ -217,3 +197,33 @@ function updateExerciseList() {
         }
     });
 }
+
+function updateCircuitCounter() {
+    const counter = document.getElementById('circuitCounter');
+    counter.innerHTML = '';
+    for (let i = 1; i <= totalCircuits; i++) {
+        const dot = document.createElement('div');
+        dot.className = `circuit-dot ${i < currentCircuit ? 'completed' : ''}`;
+        counter.appendChild(dot);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('circuitSlider');
+    const value = document.getElementById('circuitValue');
+    const weekSelector = document.getElementById('weekSelector');
+
+    slider.addEventListener('input', function() {
+        totalCircuits = parseInt(this.value);
+        value.textContent = totalCircuits;
+        if (currentWorkout) {
+            updateCircuitCounter();
+        }
+    });
+
+    weekSelector.addEventListener('change', function() {
+        selectedWeek = this.value;
+    });
+
+    loadWorkouts();
+});

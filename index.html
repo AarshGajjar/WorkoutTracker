@@ -3,16 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="dark">
     <title>Calisthenics Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .week-selector-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #weekSelector {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <div class="week-selector-container">
+            <label for="weekSelector" style="margin-right: 10px;">Phase:</label>
+            <select id="weekSelector">
+                <option value="Week 1-2">Weeks 1-2: Foundation</option>
+                <option value="Week 3-4">Weeks 3-4: Intensification</option>
+                <option value="Week 5-6">Weeks 5-6: Peak</option>
+            </select>
+        </div>
+
         <div id="daySelector" class="day-selector">
-            <button class="day-btn" onclick="startWorkout(1)">Pull/Push Power + Upper Skills</button>
-            <button class="day-btn" onclick="startWorkout(2)">Strength + Lower Skills + Core</button>
-            <button class="day-btn" onclick="startWorkout(3)">Hybrid + Advanced Skills + Arms</button>
+            <button class="day-btn" onclick="startWorkout(1)">Monday: Upper Hypertrophy + L-Sit</button>
+            <button class="day-btn" onclick="startWorkout(2)">Tuesday: Lower + Core</button>
+            <button class="day-btn" onclick="startWorkout(3)">Wednesday: Upper Volume + Handstand</button>
+            <button class="day-btn" onclick="startWorkout(4)">Thursday: Lower + Forearms</button>
+            <button class="day-btn" onclick="startWorkout(5)">Friday: Upper Strength + Skills</button>
+            <button class="day-btn" onclick="startWorkout(6)">Saturday: Full Body Circuit</button>
         </div>
 
         <div id="workoutContainer" class="workout-container">
