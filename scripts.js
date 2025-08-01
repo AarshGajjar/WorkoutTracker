@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const dom = {
-        weekSelector: document.getElementById('weekSelector'),
+        phaseSelector: document.querySelector('.phase-selector'),
         daySelector: document.getElementById('daySelector'),
         workoutContainer: document.getElementById('workoutContainer'),
         completionScreen: document.getElementById('completionScreen'),
@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         circuitValue: document.getElementById('circuitValue'),
         summaryContainer: document.getElementById('summaryContainer'),
         soundCue: document.getElementById('soundCue'),
-        weekSelectorContainer: document.querySelector('.week-selector-container'),
     };
 
     // --- State Management ---
@@ -271,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showScreen(screenName) {
-        dom.weekSelectorContainer.style.display = (screenName === 'daySelector') ? 'block' : 'none';
+        dom.phaseSelector.style.display = (screenName === 'daySelector') ? 'flex' : 'none';
         dom.daySelector.style.display = (screenName === 'daySelector') ? 'flex' : 'none';
         dom.workoutContainer.style.display = (screenName === 'workout') ? 'flex' : 'none';
         dom.completionScreen.style.display = (screenName === 'completion') ? 'flex' : 'none';
@@ -338,8 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    dom.weekSelector.addEventListener('change', (e) => {
-        state.selectedWeek = e.target.value;
+    dom.phaseSelector.addEventListener('click', (e) => {
+        if (e.target.classList.contains('phase-btn')) {
+            document.querySelectorAll('.phase-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            state.selectedWeek = e.target.dataset.week;
+        }
     });
 
     dom.circuitSlider.addEventListener('input', (e) => {
